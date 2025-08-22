@@ -6,14 +6,14 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
   {
     title: 'Explore',
     href: '/explore/explore',
-    image: '/images/thumbnail-01.webp',
+    image: '/images/thumbnail.webp',
     chipProps: { type: 'secondary' },
     content: <Plan3d modelUrl="/ss.glb" />,
   },
   {
     title: 'Problem',
     href: '/explore/problem',
-    image: '/images/thumbnail-02.webp',
+    image: '/images/thumbnail.webp',
     chipProps: { type: 'secondary' },
     content: {
       headerData: {
@@ -58,7 +58,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
   {
     title: 'Solution',
     href: '/explore/solution',
-    image: '/images/thumbnail-01.webp',
+    image: '/images/thumbnail.webp',
     chipProps: { type: 'secondary' },
     content: {
       headerData: {
@@ -104,13 +104,13 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
   {
     title: 'Proof',
     href: '/explore/proof',
-    image: '/images/thumbnail-02.webp',
+    image: '/images/thumbnail.webp',
     content: <Plan3d modelUrl="/ss.glb" />,
   },
   {
     title: 'Delivery',
     href: '/explore/delivery',
-    image: '/images/thumbnail-01.webp',
+    image: '/images/thumbnail.webp',
     chipProps: { type: 'secondary' },
     content: {
       headerData: {
@@ -157,7 +157,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
   {
     title: 'Installation',
     href: '/explore/installation',
-    image: '/images/thumbnail-02.webp',
+    image: '/images/thumbnail.webp',
     chipProps: { type: 'secondary' },
     content: {
       headerData: {
@@ -203,7 +203,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
   {
     title: 'Experts',
     href: '/explore/experts',
-    image: '/images/thumbnail-01.webp',
+    image: '/images/thumbnail.webp',
     chipProps: { type: 'secondary' },
     content: {
       headerData: {
@@ -249,7 +249,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
   {
     title: 'Testimonials',
     href: '/explore/testimonials',
-    image: '/images/thumbnail-02.webp',
+    image: '/images/thumbnail.webp',
     chipProps: { type: 'secondary' },
     content: {
       headerData: {

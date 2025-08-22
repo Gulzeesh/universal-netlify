@@ -15,7 +15,7 @@ const ExploreHomeCard = ({ data }: { data: ExploreRoutingType }) => {
         sizes="100vw"
         src={data.image}
         alt="home-card-img"
-        className="h-full w-full rounded-xl"
+        className="h-full w-full rounded-xl object-cover"
       />
       <Chip
         text={data.title}
