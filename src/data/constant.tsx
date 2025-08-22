@@ -8,7 +8,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
     href: '/explore/explore',
     image: '/images/thumbnail.webp',
     chipProps: { type: 'secondary' },
-    content: <Plan3d modelUrl="/ss.glb" />,
+    content: <Plan3d modelUrl="/ss1.glb" />,
   },
   {
     title: 'Problem',
