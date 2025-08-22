@@ -10,9 +10,8 @@ import {
   Sky,
   Loader,
 } from '@react-three/drei';
-import { BufferGeometry, ShaderMaterial, Line } from 'three';
-import { Float32BufferAttribute } from 'three';
-import { MathUtils, Path, Group, REVISION } from 'three';
+import { CircleGeometry, MeshStandardMaterial } from 'three';
+import { MathUtils, Group, REVISION } from 'three';
 import { KTX2Loader } from 'three-stdlib';
 import Header from '../ui/Header';
 import { HomeIcon, VerifiedIcon } from '../icons';
@@ -23,91 +22,91 @@ interface SceneProps {
   modelUrl: string;
 }
 
-const LineCircle = memo(() => {
-  const points = new Path()
-    .absarc(0, 0, 13.02, 0, Math.PI * 2)
-    .getSpacedPoints(128);
+// const LineCircle = memo(() => {
+//   const points = new Path()
+//     .absarc(0, 0, 13.02, 0, Math.PI * 2)
+//     .getSpacedPoints(128);
 
-  const positions: number[] = [];
-  const alphas: number[] = [];
+//   const positions: any = [];
+//   const alphas: any = [];
 
-  points.forEach((point, index) => {
-    positions.push(point.x, point.y, 0);
+//   points.forEach((point, index) => {
+//     positions.push(point.x, point.y, 0);
 
-    const t = index / (points.length - 1);
+//     const t = index / (points.length - 1);
 
-    let alpha;
-    if (t <= 0.6) {
-      alpha = t / 0.6;
-    } else if (t >= 0.7) {
-      alpha = (1.0 - t) / 0.6;
-    } else {
-      alpha = 1.0;
-    }
+//     let alpha;
+//     if (t <= 0.6) {
+//       alpha = t / 0.6;
+//     } else if (t >= 0.7) {
+//       alpha = (1.0 - t) / 0.6;
+//     } else {
+//       alpha = 1.0;
+//     }
 
-    alphas.push(alpha);
-  });
+//     alphas.push(alpha);
+//   });
 
-  const circleGeometry = useMemo(() => {
-    const geometry = new BufferGeometry();
-    geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
-    geometry.setAttribute('alpha', new Float32BufferAttribute(alphas, 1));
-    return geometry;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+//   const circleGeometry = useMemo(() => {
+//     const geometry = new BufferGeometry();
+//     geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
+//     geometry.setAttribute('alpha', new Float32BufferAttribute(alphas, 1));
+//     return geometry;
+//   }, []);
 
-  const circleMaterial = useMemo(() => {
-    return new ShaderMaterial({
-      uniforms: {},
-      vertexShader: `
-        attribute float alpha;
-        varying float vAlpha;
+//   const circleMaterial = useMemo(() => {
+//     return new ShaderMaterial({
+//       uniforms: {},
+//       vertexShader: `
+//         attribute float alpha;
+//         varying float vAlpha;
         
-        void main() {
-          vAlpha = alpha;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        varying float vAlpha;
+//         void main() {
+//           vAlpha = alpha;
+//           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+//         }
+//       `,
+//       fragmentShader: `
+//         varying float vAlpha;
         
-        void main() {
-          vec3 color = vec3(0, 0, 0); 
-          gl_FragColor = vec4(color, vAlpha);
-        }
-      `,
-    });
-  }, []);
+//         void main() {
+//           vec3 color = vec3(0, 0, 0); 
+//           gl_FragColor = vec4(color, vAlpha);
+//         }
+//       `,
+//     });
+//   }, []);
 
-  const line = useMemo(() => {
-    const lineObject = new Line(circleGeometry, circleMaterial);
-    lineObject.rotateX(MathUtils.degToRad(-90));
-    lineObject.rotateZ(MathUtils.degToRad(90));
+//   const line = useMemo(() => {
+//     const lineObject = new Line(circleGeometry, circleMaterial);
+//     lineObject.rotateX(MathUtils.degToRad(-90));
+//     lineObject.rotateZ(MathUtils.degToRad(90));
 
-    return lineObject;
-  }, [circleGeometry, circleMaterial]);
+//     return lineObject;
+//   }, [circleGeometry, circleMaterial]);
 
-  return <primitive object={line} castShadow={false} receiveShadow={false} />;
+//   return <primitive object={line} castShadow={false} receiveShadow={false} />;
+// });
+
+const CirclePlane = memo(() => {
+  const circleGeo = useMemo(() => new CircleGeometry(15, 1000), []);
+  const circleMat = useMemo(
+    () => new MeshStandardMaterial({ color: '#030D17' }),
+    [],
+  );
+
+  return (
+    <mesh
+      rotation-x={MathUtils.degToRad(-90)}
+      position-y={-0.03}
+      receiveShadow
+      castShadow
+      geometry={circleGeo}
+      material={circleMat}
+    />
+  );
 });
 
-// const CirclePlane = memo(() => {
-//   const circleGeo = useMemo(() => new CircleGeometry(13, 64, 64), []);
-//   const circleMat = useMemo(
-//     () => new MeshStandardMaterial({ color: '#74D4FF' }),
-//     [],
-//   );
-
-//   return (
-//     <mesh
-//       rotation-x={MathUtils.degToRad(-90)}
-//       position-y={-0.01}
-//       receiveShadow
-//       castShadow
-//       geometry={circleGeo}
-//       material={circleMat}
-//     />
-//   );
-// });
 
 const Button360 = memo(() => {
   const groupRef = useRef<Group>(null!);
@@ -170,10 +169,10 @@ const Plan3d = memo(({ modelUrl }: SceneProps) => {
       </Link>
       <Canvas
         shadows
-        gl={{ antialias: false }}
+        gl={{ antialias: true }}
         dpr={[1, 1.5]}
         camera={{ position: [0, 5, 50], fov: 35 }}
-        className="h-screen w-full border"
+        className="h-screen w-full"
       >
         <color attach="background" args={['white']} />
 
@@ -190,8 +189,8 @@ const Plan3d = memo(({ modelUrl }: SceneProps) => {
         <Suspense fallback={null}>
           <group position={[0, -4, 0]}>
             <GLTFModel modelUrl={modelUrl} />
-            {/* <CirclePlane /> */}
-            <LineCircle />
+            <CirclePlane />
+            {/* <LineCircle /> */}
             <Button360 />
           </group>
         </Suspense>
@@ -214,7 +213,7 @@ const Plan3d = memo(({ modelUrl }: SceneProps) => {
   );
 });
 
-LineCircle.displayName = 'LineCircle';
+CirclePlane.displayName = 'CirclePlane';
 Button360.displayName = 'Button360';
 GLTFModel.displayName = 'GLTFModel';
 Plan3d.displayName = 'Plan3d';
