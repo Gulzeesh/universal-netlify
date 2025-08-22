@@ -1,0 +1,48 @@
+'use client';
+import { EXPLORE_ROUTING } from '@/data/constant';
+import { usePathname } from 'next/navigation';
+import { isValidElement, useMemo } from 'react';
+import Header from '@/components/ui/Header';
+import PointerList from './components/PointerList';
+import Video from '@/components/ui/Video';
+import Button from '@/components/ui/Button';
+import { HomeIcon } from '@/components/icons';
+import Link from 'next/link';
+
+function ExploreSection() {
+  const pathName = usePathname();
+  const route = useMemo(
+    () => EXPLORE_ROUTING.find((r) => r.href === pathName),
+    [pathName],
+  );
+
+  if (!route) return <div>Page not found</div>;
+
+  if (isValidElement(route.content))
+    return <div className="h-screen w-full">{route.content}</div>;
+
+  return (
+    <div className="flex h-[calc(100vh-74px)] flex-col gap-8 pb-8">
+      <Header
+        {...route.content.headerData}
+        className={`px-16 pt-6 ${route.content.headerData.className || ''}`}
+      />
+      <div className="mx-[46px] flex flex-grow gap-8">
+        <div className="flex w-[424px] min-w-[424px] flex-col items-start gap-8">
+          <PointerList {...route.content.pointerListData} />
+          <Link href="/explore">
+            <Button
+              variant="secondary"
+              content="Back to Home"
+              leftIcon={<HomeIcon />}
+              className="self-start"
+            />
+          </Link>
+        </div>
+        <Video {...route.content.videoData} />
+      </div>
+    </div>
+  );
+}
+
+export default ExploreSection;
