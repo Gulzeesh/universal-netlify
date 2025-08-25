@@ -1,5 +1,5 @@
 'use client';
-import { useRef, memo, useMemo, Suspense, useState, useCallback } from 'react';
+import { useRef, memo, useMemo, Suspense, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {
   OrbitControls,
@@ -13,7 +13,6 @@ import {
 import {
   CircleGeometry,
   Mesh,
-  MeshBasicMaterial,
   MeshStandardMaterial,
   Object3D,
   Material,
@@ -22,17 +21,13 @@ import { MathUtils, Group, REVISION } from 'three';
 import { KTX2Loader } from 'three-stdlib';
 import { GLTF } from 'three-stdlib';
 import Header from '../ui/Header';
-import { HomeIcon, VerifiedIcon } from '../icons';
+import { HomeIcon } from '../icons';
 import Link from 'next/link';
 import Button from '../ui/Button';
+import Image from 'next/image';
 
 interface SceneProps {
   modelUrl: string;
-}
-
-interface HotspotMesh extends Mesh {
-  name: string;
-  uuid: string;
 }
 
 interface GLTFResult extends GLTF {
@@ -45,10 +40,9 @@ interface HotspotPopupProps {
   description?: string;
 }
 
-const CIRCLE_RADIUS = 15;
+const CIRCLE_RADIUS = 4.4;
 const CIRCLE_SEGMENTS = 64;
-const MODEL_SCALE = 3;
-const HOTSPOT_DISTANCE_FACTOR = 18;
+const HOTSPOT_DISTANCE_FACTOR = 8;
 const ANIMATION_SPEED = 2;
 
 const CirclePlane = memo(() => {
@@ -73,20 +67,6 @@ const CirclePlane = memo(() => {
   );
 });
 
-const Button360 = memo(() => {
-  const groupRef = useRef<Group>(null);
-
-  return (
-    <group ref={groupRef} position={[0, -1, 13.02]}>
-      <Html as="div" center sprite transform={false} zIndexRange={[12, 0]}>
-        <div className="font-dm-sans w-[250px] rounded-full bg-white px-5 py-2 text-center text-2xl font-normal text-black">
-          Drag to view 360°
-        </div>
-      </Html>
-    </group>
-  );
-});
-
 const HotspotPopup = memo<HotspotPopupProps>(({ name, description }) => (
   <div className="absolute bottom-9 w-[250px] rounded-xl bg-white p-3 shadow-lg">
     <h1 className="font-dm-sans text-lg font-semibold">
@@ -101,7 +81,6 @@ const HotspotPopup = memo<HotspotPopupProps>(({ name, description }) => (
 const GLTFModel = memo<SceneProps>(({ modelUrl }) => {
   const { gl } = useThree();
   const [clickedHotspot, setClickedHotspot] = useState<string>('');
-  const highlightMeshesRef = useRef<MeshBasicMaterial[]>([]);
 
   const { scene, nodes } = useGLTF(modelUrl, true, false, (loader) => {
     const THREE_PATH = `https://unpkg.com/three@0.${REVISION}.x`;
@@ -111,72 +90,87 @@ const GLTFModel = memo<SceneProps>(({ modelUrl }) => {
     loader.setKTX2Loader(ktx2Loader.detectSupport(gl));
   }) as GLTFResult;
 
-  useMemo(() => {
-    const meshes: MeshBasicMaterial[] = [];
+  const meshes = useMemo(() => {
+    const groupedMeshes: Array<{ index: number; highlight?: Mesh; ui?: Mesh }> =
+      [];
 
     Object.values(nodes).forEach((node) => {
-      if (node.type === 'Mesh' && node.name.startsWith('highlight')) {
+      if (node.type === 'Mesh') {
         const mesh = node as Mesh;
-        const material = new MeshBasicMaterial({
-          color: '#0085b2',
-          transparent: true,
-          opacity: 0.3,
-        });
-        mesh.material = material;
-        meshes.push(material);
+        let index: number | null = null;
+
+        if (mesh.name.startsWith('highlight_')) {
+          index = parseInt(mesh.name.split('_')[1]);
+          (mesh.material as MeshStandardMaterial).transparent = true;
+
+          if (!groupedMeshes[index]) {
+            groupedMeshes[index] = { index };
+          }
+          groupedMeshes[index].highlight = mesh;
+        } else if (mesh.name.startsWith('ui_')) {
+          index = parseInt(mesh.name.split('_')[1]);
+
+          if (!groupedMeshes[index]) {
+            groupedMeshes[index] = { index };
+          }
+          groupedMeshes[index].ui = mesh;
+        }
       }
     });
 
-    highlightMeshesRef.current = meshes;
-    return meshes;
+    return groupedMeshes;
   }, [nodes]);
-
-  const hotspots = useMemo(() => {
-    return Object.values(nodes).filter(
-      (node): node is HotspotMesh =>
-        node.type === 'Mesh' && node.name.startsWith('ui_'),
-    );
-  }, [nodes]);
-
-  const handleHotspotClick = useCallback((uuid: string) => {
-    setClickedHotspot((prev) => (prev === uuid ? '' : uuid));
-  }, []);
 
   useFrame(({ clock }) => {
     const t = (clock.elapsedTime / ANIMATION_SPEED) * Math.PI * 2;
     const alpha = (Math.sin(t) + 1) / 2;
     const opacity = MathUtils.lerp(0.3, 1.0, alpha);
 
-    highlightMeshesRef.current.forEach((material) => {
-      material.opacity = opacity;
+    meshes.forEach((mesh) => {
+      if (mesh.highlight?.uuid === clickedHotspot) {
+        (mesh.highlight?.material as MeshStandardMaterial).opacity = opacity;
+      } else {
+        (mesh.highlight?.material as MeshStandardMaterial).opacity = 0;
+      }
     });
   });
 
+  const handleHotspotClick = (uuid: string) => {
+    setClickedHotspot((prev) => (prev === uuid ? '' : uuid));
+  };
+
   return (
-    <Center top castShadow receiveShadow position-y={0.1} scale={MODEL_SCALE}>
+    <Center top castShadow receiveShadow position-y={0.1}>
       <primitive object={scene} castShadow receiveShadow />
 
-      {hotspots.map((mesh) => (
+      {meshes.map((mesh) => (
         <Html
-          key={mesh.uuid}
-          position={[mesh.position.x, mesh.position.y, mesh.position.z]}
+          key={mesh.index}
+          position={[
+            (mesh.ui as Mesh).position.x + 0.1,
+            (mesh.ui as Mesh).position.y + 0.1,
+            (mesh.ui as Mesh).position.z + 0.1,
+          ]}
           distanceFactor={HOTSPOT_DISTANCE_FACTOR}
           center
+          occlude
           className="relative"
         >
           <div
-            onClick={() => handleHotspotClick(mesh.uuid)}
-            className="relative flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-white transition-transform before:absolute before:h-8 before:w-8 before:rounded-full before:border-[2px] before:border-white hover:scale-110"
-            role="button"
-            tabIndex={0}
+            className="relative flex size-5"
+            onClick={() => handleHotspotClick((mesh.highlight as Mesh).uuid)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
-                handleHotspotClick(mesh.uuid);
+                handleHotspotClick((mesh.highlight as Mesh).uuid);
               }
             }}
-            aria-label={`View details for ${mesh.name.replace('ui_', '').replaceAll('_', ' ')}`}
           >
-            {mesh.uuid === clickedHotspot && <HotspotPopup name={mesh.name} />}
+            <span className="bg-primary-500 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+            <span className="bg-primary-500 relative inline-flex size-5 rounded-full"></span>
+
+            {(mesh.highlight as Mesh).uuid === clickedHotspot && (
+              <HotspotPopup name={`This is Highlight ${mesh.index}`} />
+            )}
           </div>
         </Html>
       ))}
@@ -185,6 +179,34 @@ const GLTFModel = memo<SceneProps>(({ modelUrl }) => {
 });
 
 const Plan3d = memo<SceneProps>(({ modelUrl }) => {
+  const [isIdle, setIsIdle] = useState(false);
+  const idleTimeout = useRef<NodeJS.Timeout | null>(null);
+  const IDLE_DELAY = 3000;
+
+  useEffect(() => {
+    const canvas = document.querySelector('canvas');
+    if (!canvas) return;
+
+    const handleActivity = () => {
+      setIsIdle(false);
+      if (idleTimeout.current) clearTimeout(idleTimeout.current);
+      idleTimeout.current = setTimeout(() => setIsIdle(true), IDLE_DELAY);
+    };
+
+    ['mousemove', 'mousedown', 'touchstart', 'wheel'].forEach((event) => {
+      canvas.addEventListener(event, handleActivity);
+    });
+
+    handleActivity();
+
+    return () => {
+      if (idleTimeout.current) clearTimeout(idleTimeout.current);
+      ['mousemove', 'mousedown', 'touchstart', 'wheel'].forEach((event) => {
+        canvas.removeEventListener(event, handleActivity);
+      });
+    };
+  }, []);
+
   return (
     <>
       <Header
@@ -196,13 +218,6 @@ const Plan3d = memo<SceneProps>(({ modelUrl }) => {
         className="absolute top-0 z-30 w-full px-16 pt-4 [&>img:last-child]:opacity-0"
       />
 
-      <div className="bg-secondary-500 absolute right-10 bottom-26 z-30 flex w-fit gap-2 rounded-full px-4 py-3">
-        <VerifiedIcon />
-        <p className="text-2xl font-semibold text-white">
-          Tested & Approved by IIT BOMBAY
-        </p>
-      </div>
-
       <Link href="/explore" className="absolute bottom-26 left-10 z-30">
         <Button
           variant="secondary"
@@ -212,12 +227,27 @@ const Plan3d = memo<SceneProps>(({ modelUrl }) => {
         />
       </Link>
 
+      {isIdle && (
+        <div className="pointer-events-none absolute bottom-25 z-30 flex w-full flex-col items-center justify-center gap-2">
+          <Image
+            src={'/finger-click.gif'}
+            width={150}
+            height={150}
+            alt="nudge gif"
+            className="translate-y-8"
+          />
+          <h1 className="font-dm-sans text-2xl font-normal mix-blend-darken">
+            Drag to view 360°
+          </h1>
+        </div>
+      )}
+
       <Canvas
         shadows
         gl={{
           antialias: true,
         }}
-        camera={{ position: [0, 5, 50], fov: 35, near: 0.1, far: 1000 }}
+        camera={{ position: [0, 1, 13], fov: 35, near: 0.1, far: 1000 }}
         className="h-screen w-full"
       >
         <color attach="background" args={['white']} />
@@ -238,10 +268,9 @@ const Plan3d = memo<SceneProps>(({ modelUrl }) => {
         />
 
         <Suspense fallback={null}>
-          <group position={[0, -4, 0]}>
+          <group position={[0, -1.5, 0]}>
             <GLTFModel modelUrl={modelUrl} />
             <CirclePlane />
-            <Button360 />
           </group>
         </Suspense>
 
@@ -267,7 +296,6 @@ const Plan3d = memo<SceneProps>(({ modelUrl }) => {
 });
 
 CirclePlane.displayName = 'CirclePlane';
-Button360.displayName = 'Button360';
 HotspotPopup.displayName = 'HotspotPopup';
 GLTFModel.displayName = 'GLTFModel';
 Plan3d.displayName = 'Plan3d';
