@@ -17,14 +17,13 @@ import {
   Object3D,
   Material,
 } from 'three';
-import { MathUtils, Group, REVISION } from 'three';
+import { MathUtils, REVISION } from 'three';
 import { KTX2Loader } from 'three-stdlib';
 import { GLTF } from 'three-stdlib';
 import Header from '../ui/Header';
-import { HomeIcon } from '../icons';
-import Link from 'next/link';
-import Button from '../ui/Button';
 import Image from 'next/image';
+import Tag from '../ui/Tag';
+import { LABELS } from '@/data/constant';
 
 interface SceneProps {
   modelUrl: string;
@@ -33,11 +32,6 @@ interface SceneProps {
 interface GLTFResult extends GLTF {
   nodes: Record<string, Object3D>;
   materials: Record<string, Material>;
-}
-
-interface HotspotPopupProps {
-  name: string;
-  description?: string;
 }
 
 const CIRCLE_RADIUS = 4.4;
@@ -67,17 +61,6 @@ const CirclePlane = memo(() => {
   );
 });
 
-const HotspotPopup = memo<HotspotPopupProps>(({ name, description }) => (
-  <div className="absolute bottom-9 w-[250px] rounded-xl bg-white p-3 shadow-lg">
-    <h1 className="font-dm-sans text-lg font-semibold">
-      {name.replace('ui_', '').replaceAll('_', ' ')}
-    </h1>
-    <p className="text-black-300 text-xs">
-      {description || "Pure iron's atoms are arranged in a repeating pattern"}
-    </p>
-  </div>
-));
-
 const GLTFModel = memo<SceneProps>(({ modelUrl }) => {
   const { gl } = useThree();
   const [clickedHotspot, setClickedHotspot] = useState<string>('');
@@ -100,7 +83,7 @@ const GLTFModel = memo<SceneProps>(({ modelUrl }) => {
         let index: number | null = null;
 
         if (mesh.name.startsWith('highlight_')) {
-          index = parseInt(mesh.name.split('_')[1]);
+          index = parseInt(mesh.name.split('_')[1]) - 1;
           (mesh.material as MeshStandardMaterial).transparent = true;
 
           if (!groupedMeshes[index]) {
@@ -108,8 +91,9 @@ const GLTFModel = memo<SceneProps>(({ modelUrl }) => {
           }
           groupedMeshes[index].highlight = mesh;
         } else if (mesh.name.startsWith('ui_')) {
-          index = parseInt(mesh.name.split('_')[1]);
-
+          index = parseInt(mesh.name.split('_')[1]) - 1;
+          (mesh.material as MeshStandardMaterial).transparent = true;
+          (mesh.material as MeshStandardMaterial).opacity = 0;
           if (!groupedMeshes[index]) {
             groupedMeshes[index] = { index };
           }
@@ -127,17 +111,15 @@ const GLTFModel = memo<SceneProps>(({ modelUrl }) => {
     const opacity = MathUtils.lerp(0.3, 1.0, alpha);
 
     meshes.forEach((mesh) => {
-      if (mesh.highlight?.uuid === clickedHotspot) {
-        (mesh.highlight?.material as MeshStandardMaterial).opacity = opacity;
-      } else {
-        (mesh.highlight?.material as MeshStandardMaterial).opacity = 0;
+      if (mesh.highlight) {
+        if (mesh.ui?.uuid === clickedHotspot) {
+          (mesh.highlight?.material as MeshStandardMaterial).opacity = opacity;
+        } else {
+          (mesh.highlight?.material as MeshStandardMaterial).opacity = 0;
+        }
       }
     });
   });
-
-  const handleHotspotClick = (uuid: string) => {
-    setClickedHotspot((prev) => (prev === uuid ? '' : uuid));
-  };
 
   return (
     <Center top castShadow receiveShadow position-y={0.1}>
@@ -158,18 +140,16 @@ const GLTFModel = memo<SceneProps>(({ modelUrl }) => {
         >
           <div
             className="relative flex size-5"
-            onClick={() => handleHotspotClick((mesh.highlight as Mesh).uuid)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                handleHotspotClick((mesh.highlight as Mesh).uuid);
-              }
-            }}
+            onClick={() => setClickedHotspot((mesh.ui as Mesh)?.uuid)}
           >
             <span className="bg-primary-500 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
             <span className="bg-primary-500 relative inline-flex size-5 rounded-full"></span>
 
-            {(mesh.highlight as Mesh).uuid === clickedHotspot && (
-              <HotspotPopup name={`This is Highlight ${mesh.index}`} />
+            {(mesh.ui as Mesh)?.uuid === clickedHotspot && (
+              <Tag
+                title={LABELS[mesh.index].title}
+                description={LABELS[mesh.index].description}
+              />
             )}
           </div>
         </Html>
@@ -217,15 +197,6 @@ const Plan3d = memo<SceneProps>(({ modelUrl }) => {
         }}
         className="absolute top-0 z-30 w-full px-16 pt-4 [&>img:last-child]:opacity-0"
       />
-
-      <Link href="/explore" className="absolute bottom-26 left-10 z-30">
-        <Button
-          variant="secondary"
-          content="Back to Home"
-          leftIcon={<HomeIcon />}
-          className="self-start"
-        />
-      </Link>
 
       {isIdle && (
         <div className="pointer-events-none absolute bottom-25 z-30 flex w-full flex-col items-center justify-center gap-2">
@@ -296,7 +267,6 @@ const Plan3d = memo<SceneProps>(({ modelUrl }) => {
 });
 
 CirclePlane.displayName = 'CirclePlane';
-HotspotPopup.displayName = 'HotspotPopup';
 GLTFModel.displayName = 'GLTFModel';
 Plan3d.displayName = 'Plan3d';
 

@@ -8,7 +8,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
     href: '/explore/explore',
     image: '/images/thumbnail.webp',
     chipProps: { type: 'secondary' },
-    content: <Plan3d modelUrl="/ss1.glb" />,
+    content: <Plan3d modelUrl="/ss3.glb" />,
   },
   {
     title: 'Problem',
@@ -353,5 +353,43 @@ export const VIDEO_DATA: VideoCardProps[] = [
     src: '/videos/ec-recognised-by-experts-with-music.webm',
     duration: '01:53',
     title: 'Introduction to our Structure & Features',
+  },
+];
+
+export const LABELS = [
+  {
+    title: 'Rock-Solid Foundation',
+    description:
+      'Anchored with world-class Hilti chemicals — stronger than regular bolts and 100% leak-proof for your roof.',
+  },
+  {
+    title: '⁠Rust-Proof for 10+ Years',
+    description:
+      'Every steel part is coated with a thick zinc layer (80 microns) so it won’t rust, even in heavy rains.',
+  },
+  {
+    title: 'Fast & Error-Free Install',
+    description:
+      'Smart Japanese design (poka-yoke) — everything is pre-fabricated, so your solar setup is installed in just 8 hours with zero cutting or welding.',
+  },
+  {
+    title: 'Storm-Ready Design',
+    description:
+      'Special tapering channels keep the structure stable in winds up to 180 km/h — as strong as a cyclone.',
+  },
+  {
+    title: '⁠Premium-Grade Steel',
+    description:
+      'Made only from Tata/JSW/Essar steel. Our columns use 350 MPa steel and rafters 550 MPa steel — far stronger than the 250 MPa used by others.',
+  },
+  {
+    title: 'Anti-Loosening Bolts',
+    description:
+      'Unique Nord-Lock washers keep every bolt tight, even during strong winds and vibrations.',
+  },
+  {
+    title: '⁠Certified by Experts',
+    description:
+      'Our design follows strict Indian standards and is certified by IIT Bombay after advanced wind and safety tests.',
   },
 ];

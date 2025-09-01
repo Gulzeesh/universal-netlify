@@ -76,3 +76,9 @@ export interface VideoProps {
   src: string;
   className?: string;
 }
+
+export interface TagProps {
+  title: string;
+  description: string;
+  className?: string;
+}

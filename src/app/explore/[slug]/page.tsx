@@ -5,9 +5,6 @@ import { isValidElement, useMemo } from 'react';
 import Header from '@/components/ui/Header';
 import PointerList from './components/PointerList';
 import Video from '@/components/ui/Video';
-import Button from '@/components/ui/Button';
-import { HomeIcon } from '@/components/icons';
-import Link from 'next/link';
 
 function ExploreSection() {
   const pathName = usePathname();
@@ -28,17 +25,7 @@ function ExploreSection() {
         className={`px-16 pt-6 ${route.content.headerData.className || ''}`}
       />
       <div className="mx-[46px] flex flex-grow gap-8">
-        <div className="flex w-[424px] min-w-[424px] flex-col items-start gap-8">
-          <PointerList {...route.content.pointerListData} />
-          <Link href="/explore">
-            <Button
-              variant="secondary"
-              content="Back to Home"
-              leftIcon={<HomeIcon />}
-              className="self-start"
-            />
-          </Link>
-        </div>
+        <PointerList {...route.content.pointerListData} />
         <Video {...route.content.videoData} />
       </div>
     </div>
