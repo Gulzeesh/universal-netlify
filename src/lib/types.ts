@@ -79,6 +79,6 @@ export interface VideoProps {
 
 export interface TagProps {
   title: string;
-  description: string;
+  children: ReactNode;
   className?: string;
 }

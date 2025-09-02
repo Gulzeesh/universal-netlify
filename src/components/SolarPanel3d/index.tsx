@@ -27,6 +27,8 @@ import { LABELS } from '@/data/constant';
 
 interface SceneProps {
   modelUrl: string;
+  highLightClicked: null | number;
+  setHighLightClicked: React.Dispatch<React.SetStateAction<null | number>>;
 }
 
 interface GLTFResult extends GLTF {
@@ -61,105 +63,108 @@ const CirclePlane = memo(() => {
   );
 });
 
-const GLTFModel = memo<SceneProps>(({ modelUrl }) => {
-  const { gl } = useThree();
-  const [clickedHotspot, setClickedHotspot] = useState<string>('');
+const GLTFModel = memo<SceneProps>(
+  ({ highLightClicked, setHighLightClicked, modelUrl }) => {
+    const { gl } = useThree();
+    const [clickedHotspot, setClickedHotspot] = useState<string>('');
 
-  const { scene, nodes } = useGLTF(modelUrl, true, false, (loader) => {
-    const THREE_PATH = `https://unpkg.com/three@0.${REVISION}.x`;
-    const ktx2Loader = new KTX2Loader().setTranscoderPath(
-      `${THREE_PATH}/examples/jsm/libs/basis/`,
-    );
-    loader.setKTX2Loader(ktx2Loader.detectSupport(gl));
-  }) as GLTFResult;
+    const { scene, nodes } = useGLTF(modelUrl, true, false, (loader) => {
+      const THREE_PATH = `https://unpkg.com/three@0.${REVISION}.x`;
+      const ktx2Loader = new KTX2Loader().setTranscoderPath(
+        `${THREE_PATH}/examples/jsm/libs/basis/`,
+      );
+      loader.setKTX2Loader(ktx2Loader.detectSupport(gl));
+    }) as GLTFResult;
 
-  const meshes = useMemo(() => {
-    const groupedMeshes: Array<{ index: number; highlight?: Mesh; ui?: Mesh }> =
-      [];
+    const meshes = useMemo(() => {
+      const groupedMeshes: Array<{
+        index: number;
+        highlight?: Mesh;
+        ui?: Mesh;
+      }> = [];
 
-    Object.values(nodes).forEach((node) => {
-      if (node.type === 'Mesh') {
-        const mesh = node as Mesh;
-        let index: number | null = null;
+      Object.values(nodes).forEach((node) => {
+        if (node.type === 'Mesh') {
+          const mesh = node as Mesh;
+          let index: number | null = null;
 
-        if (mesh.name.startsWith('highlight_')) {
-          index = parseInt(mesh.name.split('_')[1]) - 1;
-          (mesh.material as MeshStandardMaterial).transparent = true;
+          if (mesh.name.startsWith('highlight_')) {
+            index = parseInt(mesh.name.split('_')[1]) - 1;
+            (mesh.material as MeshStandardMaterial).transparent = true;
 
-          if (!groupedMeshes[index]) {
-            groupedMeshes[index] = { index };
+            if (!groupedMeshes[index]) {
+              groupedMeshes[index] = { index };
+            }
+            groupedMeshes[index].highlight = mesh;
+          } else if (mesh.name.startsWith('ui_')) {
+            index = parseInt(mesh.name.split('_')[1]) - 1;
+            (mesh.material as MeshStandardMaterial).transparent = true;
+            (mesh.material as MeshStandardMaterial).opacity = 0;
+            if (!groupedMeshes[index]) {
+              groupedMeshes[index] = { index };
+            }
+            groupedMeshes[index].ui = mesh;
           }
-          groupedMeshes[index].highlight = mesh;
-        } else if (mesh.name.startsWith('ui_')) {
-          index = parseInt(mesh.name.split('_')[1]) - 1;
-          (mesh.material as MeshStandardMaterial).transparent = true;
-          (mesh.material as MeshStandardMaterial).opacity = 0;
-          if (!groupedMeshes[index]) {
-            groupedMeshes[index] = { index };
-          }
-          groupedMeshes[index].ui = mesh;
         }
-      }
+      });
+
+      return groupedMeshes;
+    }, [nodes]);
+
+    useFrame(({ clock }) => {
+      const t = (clock.elapsedTime / ANIMATION_SPEED) * Math.PI * 2;
+      const alpha = (Math.sin(t) + 1) / 2;
+      const opacity = MathUtils.lerp(0.3, 1.0, alpha);
+
+      meshes.forEach((mesh) => {
+        if (mesh.highlight) {
+          if (mesh.ui?.uuid === clickedHotspot) {
+            (mesh.highlight?.material as MeshStandardMaterial).opacity =
+              opacity;
+          } else {
+            (mesh.highlight?.material as MeshStandardMaterial).opacity = 0;
+          }
+        }
+      });
     });
 
-    return groupedMeshes;
-  }, [nodes]);
+    return (
+      <Center top castShadow receiveShadow position-y={0.1}>
+        <primitive object={scene} castShadow receiveShadow />
 
-  useFrame(({ clock }) => {
-    const t = (clock.elapsedTime / ANIMATION_SPEED) * Math.PI * 2;
-    const alpha = (Math.sin(t) + 1) / 2;
-    const opacity = MathUtils.lerp(0.3, 1.0, alpha);
-
-    meshes.forEach((mesh) => {
-      if (mesh.highlight) {
-        if (mesh.ui?.uuid === clickedHotspot) {
-          (mesh.highlight?.material as MeshStandardMaterial).opacity = opacity;
-        } else {
-          (mesh.highlight?.material as MeshStandardMaterial).opacity = 0;
-        }
-      }
-    });
-  });
-
-  return (
-    <Center top castShadow receiveShadow position-y={0.1}>
-      <primitive object={scene} castShadow receiveShadow />
-
-      {meshes.map((mesh) => (
-        <Html
-          key={mesh.index}
-          position={[
-            (mesh.ui as Mesh).position.x + 0.1,
-            (mesh.ui as Mesh).position.y + 0.1,
-            (mesh.ui as Mesh).position.z + 0.1,
-          ]}
-          distanceFactor={HOTSPOT_DISTANCE_FACTOR}
-          center
-          occlude
-          className="relative"
-        >
-          <div
-            className="relative flex size-5"
-            onClick={() => setClickedHotspot((mesh.ui as Mesh)?.uuid)}
+        {meshes.map((mesh) => (
+          <Html
+            key={mesh.index}
+            position={[
+              (mesh.ui as Mesh).position.x + 0.05,
+              (mesh.ui as Mesh).position.y + 0.05,
+              (mesh.ui as Mesh).position.z + 0.05,
+            ]}
+            distanceFactor={HOTSPOT_DISTANCE_FACTOR}
+            center
+            occlude
+            className="relative"
           >
-            <span className="bg-primary-500 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
-            <span className="bg-primary-500 relative inline-flex size-5 rounded-full"></span>
+            <div
+              className="relative flex size-5"
+              onClick={() => (
+                setClickedHotspot((mesh.ui as Mesh)?.uuid),
+                setHighLightClicked(mesh.index)
+              )}
+            >
+              <span className="bg-primary-500 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+              <span className="bg-primary-500 relative inline-flex size-5 rounded-full"></span>
+            </div>
+          </Html>
+        ))}
+      </Center>
+    );
+  },
+);
 
-            {(mesh.ui as Mesh)?.uuid === clickedHotspot && (
-              <Tag
-                title={LABELS[mesh.index].title}
-                description={LABELS[mesh.index].description}
-              />
-            )}
-          </div>
-        </Html>
-      ))}
-    </Center>
-  );
-});
-
-const Plan3d = memo<SceneProps>(({ modelUrl }) => {
+const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
   const [isIdle, setIsIdle] = useState(false);
+  const [highLightClicked, setHighLightClicked] = useState<null | number>(null);
   const idleTimeout = useRef<NodeJS.Timeout | null>(null);
   const IDLE_DELAY = 3000;
 
@@ -169,6 +174,7 @@ const Plan3d = memo<SceneProps>(({ modelUrl }) => {
 
     const handleActivity = () => {
       setIsIdle(false);
+      setHighLightClicked(null);
       if (idleTimeout.current) clearTimeout(idleTimeout.current);
       idleTimeout.current = setTimeout(() => setIsIdle(true), IDLE_DELAY);
     };
@@ -193,7 +199,7 @@ const Plan3d = memo<SceneProps>(({ modelUrl }) => {
         content={{
           title: [{ text: `India's Safest & Strongest Solar️` }],
           description:
-            'Understand how weak structures cause long-term damage, leaks, and losses.',
+            'See how smart design makes us stronger, safer, and more reliable than local structures.',
         }}
         className="absolute top-0 z-30 w-full px-16 pt-4 [&>img:last-child]:opacity-0"
       />
@@ -211,6 +217,15 @@ const Plan3d = memo<SceneProps>(({ modelUrl }) => {
             Drag to view 360°
           </h1>
         </div>
+      )}
+
+      {highLightClicked !== null && LABELS[highLightClicked] && (
+        <Tag
+          className="absolute top-1/3 right-20 z-30"
+          title={LABELS[highLightClicked].title}
+        >
+          {LABELS[highLightClicked].children}
+        </Tag>
       )}
 
       <Canvas
@@ -240,7 +255,11 @@ const Plan3d = memo<SceneProps>(({ modelUrl }) => {
 
         <Suspense fallback={null}>
           <group position={[0, -1.5, 0]}>
-            <GLTFModel modelUrl={modelUrl} />
+            <GLTFModel
+              modelUrl={modelUrl}
+              setHighLightClicked={setHighLightClicked}
+              highLightClicked={highLightClicked}
+            />
             <CirclePlane />
           </group>
         </Suspense>

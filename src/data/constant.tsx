@@ -359,37 +359,77 @@ export const VIDEO_DATA: VideoCardProps[] = [
 export const LABELS = [
   {
     title: 'Rock-Solid Foundation',
-    description:
-      'Anchored with world-class Hilti chemicals — stronger than regular bolts and 100% leak-proof for your roof.',
+    children: (
+      <p>
+        Anchored with world-class Hilti chemicals —{' '}
+        <strong> stronger than regular bolts and 100% leak-proof </strong> for
+        your roof.
+      </p>
+    ),
   },
   {
     title: '⁠Rust-Proof for 10+ Years',
-    description:
-      'Every steel part is coated with a thick zinc layer (80 microns) so it won’t rust, even in heavy rains.',
+    children: (
+      <p>
+        {' '}
+        Every steel part is{' '}
+        <strong>
+          {' '}
+          coated with a thick zinc layer (80 microns) so it won’t rust,
+        </strong>{' '}
+        even in heavy rains.
+      </p>
+    ),
   },
   {
     title: 'Fast & Error-Free Install',
-    description:
-      'Smart Japanese design (poka-yoke) — everything is pre-fabricated, so your solar setup is installed in just 8 hours with zero cutting or welding.',
+    children: (
+      <p>
+        Smart Japanese design (poka-yoke) — everything is pre-fabricated, so
+        your solar setup is installed in just{' '}
+        <strong> 8 hours with zero cutting or welding. </strong>
+      </p>
+    ),
   },
   {
     title: 'Storm-Ready Design',
-    description:
-      'Special tapering channels keep the structure stable in winds up to 180 km/h — as strong as a cyclone.',
+    children: (
+      <p>
+        Special tapering channels keep the structure stable in{' '}
+        <strong> winds up to 180 km/hr — as strong as a cyclone. </strong>
+      </p>
+    ),
   },
   {
     title: '⁠Premium-Grade Steel',
-    description:
-      'Made only from Tata/JSW/Essar steel. Our columns use 350 MPa steel and rafters 550 MPa steel — far stronger than the 250 MPa used by others.',
+    children: (
+      <p>
+        Made only from Tata/JSW/Essar steel.{' '}
+        <strong>
+          {' '}
+          Our columns use 350 MPa steel and rafters 550 MPa steel
+        </strong>{' '}
+        — far stronger than the 250 MPa used by others.
+      </p>
+    ),
   },
   {
     title: 'Anti-Loosening Bolts',
-    description:
-      'Unique Nord-Lock washers keep every bolt tight, even during strong winds and vibrations.',
+    children: (
+      <p>
+        <strong>Unique wedge locked washers keep every bolt tight</strong> ,
+        even during strong winds and vibrations.
+      </p>
+    ),
   },
   {
     title: '⁠Certified by Experts',
-    description:
-      'Our design follows strict Indian standards and is certified by IIT Bombay after advanced wind and safety tests.',
+    children: (
+      <p>
+        Our design follows strict Indian standards and is{' '}
+        <strong>approved by IIT Bombay</strong> after advanced wind and safety
+        tests.
+      </p>
+    ),
   },
 ];
