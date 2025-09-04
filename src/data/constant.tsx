@@ -359,6 +359,7 @@ export const VIDEO_DATA: VideoCardProps[] = [
 export const LABELS = [
   {
     title: 'Rock-Solid Foundation',
+    position:'right',
     children: (
       <p>
         Anchored with world-class Hilti chemicals —{' '}
@@ -369,6 +370,7 @@ export const LABELS = [
   },
   {
     title: '⁠Rust-Proof for 10+ Years',
+    position:'left',
     children: (
       <p>
         {' '}
@@ -383,6 +385,7 @@ export const LABELS = [
   },
   {
     title: 'Fast & Error-Free Install',
+    position:'left',
     children: (
       <p>
         Smart Japanese design (poka-yoke) — everything is pre-fabricated, so
@@ -393,6 +396,7 @@ export const LABELS = [
   },
   {
     title: 'Storm-Ready Design',
+    position:'right',
     children: (
       <p>
         Special tapering channels keep the structure stable in{' '}
@@ -402,6 +406,7 @@ export const LABELS = [
   },
   {
     title: '⁠Premium-Grade Steel',
+    position:'right',
     children: (
       <p>
         Made only from Tata/JSW/Essar steel.{' '}
@@ -415,6 +420,7 @@ export const LABELS = [
   },
   {
     title: 'Anti-Loosening Bolts',
+    position:'left',
     children: (
       <p>
         <strong>Unique wedge locked washers keep every bolt tight</strong> ,
@@ -424,6 +430,7 @@ export const LABELS = [
   },
   {
     title: '⁠Certified by Experts',
+    position:'right',
     children: (
       <p>
         Our design follows strict Indian standards and is{' '}

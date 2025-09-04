@@ -221,7 +221,7 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
 
       {highLightClicked !== null && LABELS[highLightClicked] && (
         <Tag
-          className="absolute top-1/3 right-20 z-30"
+          className={`absolute top-1/3 ${LABELS[highLightClicked].position === 'right' ? 'right-20' : 'left-20'}  z-30`} 
           title={LABELS[highLightClicked].title}
         >
           {LABELS[highLightClicked].children}
