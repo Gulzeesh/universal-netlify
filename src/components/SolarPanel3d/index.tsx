@@ -55,8 +55,6 @@ const CirclePlane = memo(() => {
     <mesh
       rotation-x={MathUtils.degToRad(-90)}
       position-y={-0.03}
-      receiveShadow
-      castShadow
       geometry={circleGeo}
       material={circleMat}
     />
@@ -127,8 +125,8 @@ const GLTFModel = memo<SceneProps>(({ setHighLightClicked, modelUrl }) => {
   });
 
   return (
-    <Center top castShadow receiveShadow position-y={0.1}>
-      <primitive object={scene} castShadow receiveShadow />
+    <Center top position-y={0.1}>
+      <primitive object={scene} />
 
       {meshes.map((mesh) => (
         <Html
@@ -230,30 +228,23 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
       )}
 
       <Canvas
-        shadows
+        shadows={false}  
         gl={{
           antialias: true,
         }}
+  
         camera={{ position: [0, 1, 13], fov: 35, near: 0.1, far: 1000 }}
         className="h-screen w-full"
       >
         <color attach="background" args={['white']} />
 
-        <Sky
-          turbidity={10.1}
-          rayleigh={0.212}
-          mieCoefficient={0.004}
-          mieDirectionalG={0.928}
-          sunPosition={[0, 10.3, 0]}
-          azimuth={-151.9}
-        />
-
         <Environment
-          preset="studio"
-          environmentIntensity={1.5}
-          environmentRotation={[0, 10, 0]}
+          files={'/qwantani_morning_puresky_1k.hdr'}
+          environmentIntensity={2}
+          environmentRotation={[0, 1, 13]}
+          background
         />
-
+        
         <Suspense fallback={null}>
           <group position={[0, -1.5, 0]}>
             <GLTFModel
