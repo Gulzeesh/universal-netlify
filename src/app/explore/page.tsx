@@ -4,7 +4,10 @@ import Header from '@/components/ui/Header';
 
 function ExploreHome() {
   return (
-    <div className="flex h-[calc(100vh-74px)] flex-col gap-8 pb-8">
+    <div
+      className="flex h-[calc(100vh-74px)] flex-col gap-8 pb-8"
+      style={{ zoom: 0.67 }}
+    >
       {/* <Tag
         title="High Quality Virgin Steel"
         children={

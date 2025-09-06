@@ -4,7 +4,10 @@ import React from 'react';
 
 function ContentHome() {
   return (
-    <div className="flex h-[calc(100vh-74px)] flex-col justify-between pb-12">
+    <div
+      className="flex h-[calc(100vh-74px)] flex-col justify-between pb-12"
+      style={{ zoom: 0.6 }}
+    >
       <ContentHero />
       <Carousel />
     </div>

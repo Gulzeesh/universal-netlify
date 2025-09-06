@@ -5,6 +5,7 @@ const Tag = ({ title, children, className = '' }: TagProps) => {
   return (
     <div
       className={`shadow-tag absolute bottom-9 flex h-fit w-[254px] flex-col rounded-[15px] border-[1.2px] border-white bg-white ${className}`}
+      style={{ zoom: 0.67 }}
     >
       <Image
         height={0}

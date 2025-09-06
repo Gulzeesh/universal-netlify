@@ -63,104 +63,101 @@ const CirclePlane = memo(() => {
   );
 });
 
-const GLTFModel = memo<SceneProps>(
-  ({ highLightClicked, setHighLightClicked, modelUrl }) => {
-    const { gl } = useThree();
-    const [clickedHotspot, setClickedHotspot] = useState<string>('');
+const GLTFModel = memo<SceneProps>(({ setHighLightClicked, modelUrl }) => {
+  const { gl } = useThree();
+  const [clickedHotspot, setClickedHotspot] = useState<string>('');
 
-    const { scene, nodes } = useGLTF(modelUrl, true, false, (loader) => {
-      const THREE_PATH = `https://unpkg.com/three@0.${REVISION}.x`;
-      const ktx2Loader = new KTX2Loader().setTranscoderPath(
-        `${THREE_PATH}/examples/jsm/libs/basis/`,
-      );
-      loader.setKTX2Loader(ktx2Loader.detectSupport(gl));
-    }) as GLTFResult;
+  const { scene, nodes } = useGLTF(modelUrl, true, false, (loader) => {
+    const THREE_PATH = `https://unpkg.com/three@0.${REVISION}.x`;
+    const ktx2Loader = new KTX2Loader().setTranscoderPath(
+      `${THREE_PATH}/examples/jsm/libs/basis/`,
+    );
+    loader.setKTX2Loader(ktx2Loader.detectSupport(gl));
+  }) as GLTFResult;
 
-    const meshes = useMemo(() => {
-      const groupedMeshes: Array<{
-        index: number;
-        highlight?: Mesh;
-        ui?: Mesh;
-      }> = [];
+  const meshes = useMemo(() => {
+    const groupedMeshes: Array<{
+      index: number;
+      highlight?: Mesh;
+      ui?: Mesh;
+    }> = [];
 
-      Object.values(nodes).forEach((node) => {
-        if (node.type === 'Mesh') {
-          const mesh = node as Mesh;
-          let index: number | null = null;
+    Object.values(nodes).forEach((node) => {
+      if (node.type === 'Mesh') {
+        const mesh = node as Mesh;
+        let index: number | null = null;
 
-          if (mesh.name.startsWith('highlight_')) {
-            index = parseInt(mesh.name.split('_')[1]) - 1;
-            (mesh.material as MeshStandardMaterial).transparent = true;
+        if (mesh.name.startsWith('highlight_')) {
+          index = parseInt(mesh.name.split('_')[1]) - 1;
+          (mesh.material as MeshStandardMaterial).transparent = true;
 
-            if (!groupedMeshes[index]) {
-              groupedMeshes[index] = { index };
-            }
-            groupedMeshes[index].highlight = mesh;
-          } else if (mesh.name.startsWith('ui_')) {
-            index = parseInt(mesh.name.split('_')[1]) - 1;
-            (mesh.material as MeshStandardMaterial).transparent = true;
-            (mesh.material as MeshStandardMaterial).opacity = 0;
-            if (!groupedMeshes[index]) {
-              groupedMeshes[index] = { index };
-            }
-            groupedMeshes[index].ui = mesh;
+          if (!groupedMeshes[index]) {
+            groupedMeshes[index] = { index };
           }
-        }
-      });
-
-      return groupedMeshes;
-    }, [nodes]);
-
-    useFrame(({ clock }) => {
-      const t = (clock.elapsedTime / ANIMATION_SPEED) * Math.PI * 2;
-      const alpha = (Math.sin(t) + 1) / 2;
-      const opacity = MathUtils.lerp(0.3, 1.0, alpha);
-
-      meshes.forEach((mesh) => {
-        if (mesh.highlight) {
-          if (mesh.ui?.uuid === clickedHotspot) {
-            (mesh.highlight?.material as MeshStandardMaterial).opacity =
-              opacity;
-          } else {
-            (mesh.highlight?.material as MeshStandardMaterial).opacity = 0;
+          groupedMeshes[index].highlight = mesh;
+        } else if (mesh.name.startsWith('ui_')) {
+          index = parseInt(mesh.name.split('_')[1]) - 1;
+          (mesh.material as MeshStandardMaterial).transparent = true;
+          (mesh.material as MeshStandardMaterial).opacity = 0;
+          if (!groupedMeshes[index]) {
+            groupedMeshes[index] = { index };
           }
+          groupedMeshes[index].ui = mesh;
         }
-      });
+      }
     });
 
-    return (
-      <Center top castShadow receiveShadow position-y={0.1}>
-        <primitive object={scene} castShadow receiveShadow />
+    return groupedMeshes;
+  }, [nodes]);
 
-        {meshes.map((mesh) => (
-          <Html
-            key={mesh.index}
-            position={[
-              (mesh.ui as Mesh).position.x + 0.05,
-              (mesh.ui as Mesh).position.y + 0.05,
-              (mesh.ui as Mesh).position.z + 0.05,
-            ]}
-            distanceFactor={HOTSPOT_DISTANCE_FACTOR}
-            center
-            occlude
-            className="relative"
+  useFrame(({ clock }) => {
+    const t = (clock.elapsedTime / ANIMATION_SPEED) * Math.PI * 2;
+    const alpha = (Math.sin(t) + 1) / 2;
+    const opacity = MathUtils.lerp(0.3, 1.0, alpha);
+
+    meshes.forEach((mesh) => {
+      if (mesh.highlight) {
+        if (mesh.ui?.uuid === clickedHotspot) {
+          (mesh.highlight?.material as MeshStandardMaterial).opacity = opacity;
+        } else {
+          (mesh.highlight?.material as MeshStandardMaterial).opacity = 0;
+        }
+      }
+    });
+  });
+
+  return (
+    <Center top castShadow receiveShadow position-y={0.1}>
+      <primitive object={scene} castShadow receiveShadow />
+
+      {meshes.map((mesh) => (
+        <Html
+          key={mesh.index}
+          position={[
+            (mesh.ui as Mesh).position.x + 0.05,
+            (mesh.ui as Mesh).position.y + 0.05,
+            (mesh.ui as Mesh).position.z + 0.05,
+          ]}
+          distanceFactor={HOTSPOT_DISTANCE_FACTOR}
+          center
+          occlude
+          className="relative"
+        >
+          <div
+            className="relative flex size-5"
+            onClick={() => (
+              setClickedHotspot((mesh.ui as Mesh)?.uuid),
+              setHighLightClicked(mesh.index)
+            )}
           >
-            <div
-              className="relative flex size-5"
-              onClick={() => (
-                setClickedHotspot((mesh.ui as Mesh)?.uuid),
-                setHighLightClicked(mesh.index)
-              )}
-            >
-              <span className="bg-primary-500 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
-              <span className="bg-primary-500 relative inline-flex size-5 rounded-full"></span>
-            </div>
-          </Html>
-        ))}
-      </Center>
-    );
-  },
-);
+            <span className="bg-primary-500 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+            <span className="bg-primary-500 relative inline-flex size-5 rounded-full"></span>
+          </div>
+        </Html>
+      ))}
+    </Center>
+  );
+});
 
 const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
   const [isIdle, setIsIdle] = useState(false);
@@ -202,10 +199,14 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
             'See how smart design makes us stronger, safer, and more reliable than local structures.',
         }}
         className="absolute top-0 z-30 w-full px-16 pt-4 [&>img:last-child]:opacity-0"
+        style={{ zoom: 0.59 }}
       />
 
       {isIdle && (
-        <div className="pointer-events-none absolute bottom-25 z-30 flex w-full flex-col items-center justify-center gap-2">
+        <div
+          className="pointer-events-none absolute bottom-25 z-30 flex w-full flex-col items-center justify-center gap-2"
+          style={{ zoom: 0.67 }}
+        >
           <Image
             src={'/finger-click.gif'}
             width={150}
@@ -221,7 +222,7 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
 
       {highLightClicked !== null && LABELS[highLightClicked] && (
         <Tag
-          className={`absolute top-1/3 ${LABELS[highLightClicked].position === 'right' ? 'right-20' : 'left-20'}  z-30`} 
+          className={`absolute top-1/3 ${LABELS[highLightClicked].position === 'right' ? 'right-20' : 'left-20'} z-30`}
           title={LABELS[highLightClicked].title}
         >
           {LABELS[highLightClicked].children}

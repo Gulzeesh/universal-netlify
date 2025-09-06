@@ -15,7 +15,10 @@ function Tabs() {
     : HOME_ROUTING;
 
   return (
-    <div className="bg-primary-100 fixed bottom-0 flex w-full items-center">
+    <div
+      className="bg-primary-100 fixed bottom-0 flex w-full items-center"
+      style={{ zoom: 0.67 }}
+    >
       {routingData.map((data, index) => (
         <Link
           key={index}

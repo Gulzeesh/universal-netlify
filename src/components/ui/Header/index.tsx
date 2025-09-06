@@ -6,9 +6,13 @@ const Header = ({
   content,
   isRightImage = true,
   className = '',
+  style,
 }: HeaderProps) => {
   return (
-    <div className={`flex items-center justify-between ${className}`}>
+    <div
+      className={`flex items-center justify-between ${className}`}
+      style={style}
+    >
       <Image
         src="/images/logo.webp"
         width={197}

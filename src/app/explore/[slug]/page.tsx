@@ -23,6 +23,7 @@ function ExploreSection() {
       <Header
         {...route.content.headerData}
         className={`px-16 pt-6 ${route.content.headerData.className || ''}`}
+        style={{ zoom: 0.58 }}
       />
       <div className="mx-[46px] flex flex-grow gap-8">
         <PointerList {...route.content.pointerListData} />

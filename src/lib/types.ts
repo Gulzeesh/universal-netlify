@@ -70,6 +70,7 @@ export interface HeaderProps {
   };
   isRightImage?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export interface VideoProps {

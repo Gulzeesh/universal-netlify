@@ -30,10 +30,14 @@ const ContentSection = () => {
             'Understand how weak structures cause long-term damage, leaks, and losses.',
         }}
         className="px-16 pt-6"
+        style={{ zoom: 0.59 }}
       />
 
       <div className="flex flex-grow overflow-hidden">
-        <div className="relative flex w-[510px] min-w-[510px] flex-col gap-8">
+        <div
+          className="relative flex w-[510px] min-w-[510px] flex-col gap-8"
+          style={{ zoom: 0.6 }}
+        >
           <div className="ml-14 overflow-y-scroll">
             <div className="bg-background-300 mr-2 flex flex-grow flex-col gap-8 p-2.5 pb-36">
               {VIDEO_DATA.map((data, index) => (
