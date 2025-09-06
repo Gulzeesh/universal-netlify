@@ -7,9 +7,9 @@ export default function manifest(): MetadataRoute.Manifest {
     description:
       'Generate solar power for housing societies with convenience at affordable rates with Solarsquare. Explore end-to-end service, from installation to maintenance &amp; more!',
     start_url: '/',
-    display: 'standalone',
-    background_color: '#2EC6FE',
-    theme_color: '#8936FF',
+    display: 'fullscreen',
+    background_color: 'white',
+    theme_color: 'white',
     orientation: 'any',
     lang: 'en-GB',
     dir: 'auto',
