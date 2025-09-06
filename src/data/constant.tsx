@@ -105,7 +105,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
     title: 'Proof',
     href: '/explore/proof',
     image: '/images/thumbnail.webp',
-    content: <Plan3d modelUrl="/ss.glb" />,
+    content: <Plan3d modelUrl="/ss3.glb" />,
   },
   {
     title: 'Delivery',
