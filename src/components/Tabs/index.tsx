@@ -1,11 +1,13 @@
 'use client';
 import { EXPLORE_ROUTING, HOME_ROUTING } from '@/data/constant';
+import { useGLTF } from '@react-three/drei';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { HomeIcon } from '../icons';
 
 function Tabs() {
   const pathname = usePathname();
+  useGLTF.preload('public/ss3.glb')
   const isInExploreSection = pathname.startsWith('/explore/');
   const routingData = isInExploreSection
     ? [
