@@ -6,7 +6,7 @@ function ContentHome() {
   return (
     <div
       className="flex h-[calc(100vh-74px)] flex-col justify-between pb-12"
-      style={{ zoom: 0.67 }}
+      style={{ zoom: 0.8 }}
     >
       <ContentHero />
       <Carousel />

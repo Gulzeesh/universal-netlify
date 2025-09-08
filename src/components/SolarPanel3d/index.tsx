@@ -1,13 +1,11 @@
 'use client';
 import { useRef, memo, useMemo, Suspense, useState, useEffect } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import {
   OrbitControls,
-  Environment,
   Center,
   Html,
   useGLTF,
-  Sky,
   Loader,
 } from '@react-three/drei';
 import {
@@ -16,6 +14,8 @@ import {
   MeshStandardMaterial,
   Object3D,
   Material,
+  MeshBasicMaterial,
+  TextureLoader,
 } from 'three';
 import { MathUtils, REVISION } from 'three';
 import { KTX2Loader } from 'three-stdlib';
@@ -37,7 +37,7 @@ interface GLTFResult extends GLTF {
 }
 
 const CIRCLE_RADIUS = 4.4;
-const CIRCLE_SEGMENTS = 64;
+const CIRCLE_SEGMENTS = 60;
 const HOTSPOT_DISTANCE_FACTOR = 8;
 const ANIMATION_SPEED = 2;
 
@@ -47,7 +47,7 @@ const CirclePlane = memo(() => {
     [],
   );
   const circleMat = useMemo(
-    () => new MeshStandardMaterial({ color: '#030D17' }),
+    () => new MeshBasicMaterial({ color: '#A9A9A9' }),
     [],
   );
 
@@ -64,14 +64,22 @@ const CirclePlane = memo(() => {
 const GLTFModel = memo<SceneProps>(({ setHighLightClicked, modelUrl }) => {
   const { gl } = useThree();
   const [clickedHotspot, setClickedHotspot] = useState<string>('');
+  const colorMap = useLoader(TextureLoader, '/images.jpeg');
 
   const { scene, nodes } = useGLTF(modelUrl, true, false, (loader) => {
     const THREE_PATH = `https://unpkg.com/three@0.${REVISION}.x`;
     const ktx2Loader = new KTX2Loader().setTranscoderPath(
       `${THREE_PATH}/examples/jsm/libs/basis/`,
     );
-    loader.setKTX2Loader(ktx2Loader.detectSupport(gl));
+    ktx2Loader.detectSupport(gl);
+    loader.setKTX2Loader(ktx2Loader);
   }) as GLTFResult;
+
+  const planeMesh = nodes.Plane_Baked_Baked as Mesh;
+  if (planeMesh.material instanceof MeshStandardMaterial) {
+    planeMesh.material.transparent = true;
+    planeMesh.material.opacity = 0.5;
+  }
 
   const meshes = useMemo(() => {
     const groupedMeshes: Array<{
@@ -87,7 +95,10 @@ const GLTFModel = memo<SceneProps>(({ setHighLightClicked, modelUrl }) => {
 
         if (mesh.name.startsWith('highlight_')) {
           index = parseInt(mesh.name.split('_')[1]) - 1;
-          (mesh.material as MeshStandardMaterial).transparent = true;
+          (mesh.material as MeshBasicMaterial) = new MeshBasicMaterial({
+            map: colorMap,
+            transparent: true,
+          });
 
           if (!groupedMeshes[index]) {
             groupedMeshes[index] = { index };
@@ -138,8 +149,7 @@ const GLTFModel = memo<SceneProps>(({ setHighLightClicked, modelUrl }) => {
           ]}
           distanceFactor={HOTSPOT_DISTANCE_FACTOR}
           center
-          occlude
-          className="relative"
+          zIndexRange={[0, 0]}
         >
           <div
             className="relative flex size-5"
@@ -228,23 +238,21 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
       )}
 
       <Canvas
-        shadows={false}  
+        shadows={false}
         gl={{
-          antialias: true,
+          antialias: false,
         }}
-  
+        dpr={[1, 1.5]}
         camera={{ position: [0, 1, 13], fov: 35, near: 0.1, far: 1000 }}
-        className="h-screen w-full"
+        className="h-screen w-full bg-[url('/background.jpg')] bg-cover bg-no-repeat"
       >
-        <color attach="background" args={['white']} />
-
-        <Environment
+        {/* <Environment
           files={'/qwantani_morning_puresky_1k.hdr'}
           environmentIntensity={2}
           environmentRotation={[0, 1, 13]}
           background
-        />
-        
+        /> */}
+
         <Suspense fallback={null}>
           <group position={[0, -1.5, 0]}>
             <GLTFModel
@@ -261,14 +269,12 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
           maxPolarAngle={Math.PI / 2}
           minAzimuthAngle={-Infinity}
           maxAzimuthAngle={Infinity}
-          maxDistance={40}
+          maxDistance={20}
           minDistance={10}
           enableRotate
           enableZoom
           enablePan={false}
           makeDefault
-          dampingFactor={0.1}
-          enableDamping
         />
       </Canvas>
 

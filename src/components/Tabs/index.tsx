@@ -26,8 +26,8 @@ function Tabs() {
 
   return (
     <div
-      className="bg-primary-100 fixed bottom-0 flex w-full items-center"
-      style={{ zoom: 0.67 }}
+      className="bg-primary-100 fixed bottom-0 z-[999999] flex w-full items-center"
+      style={{ zoom: 0.74 }}
     >
       {routingData.map((data, index) => {
         const isInContentSectionHome = isInContentSection && data.href === '/';
