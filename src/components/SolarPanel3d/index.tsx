@@ -138,7 +138,7 @@ const GLTFModel = memo<SceneProps>(({ setHighLightClicked, modelUrl }) => {
           ]}
           distanceFactor={HOTSPOT_DISTANCE_FACTOR}
           center
-          occlude
+
           className="relative"
         >
           <div
@@ -238,13 +238,13 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
       >
         <color attach="background" args={['white']} />
 
-        {/* <Environment
+        <Environment
           files={'/qwantani_morning_puresky_1k.hdr'}
-          environmentIntensity={2}
+          environmentIntensity={3}
           environmentRotation={[0, 1, 13]}
           background
-        /> */}
-        <ambientLight intensity={20} color={0xffffff} />
+        />
+        {/* <ambientLight intensity={20} color={0xffffff} /> */}
         
         <Suspense fallback={null}>
           <group position={[0, -1.5, 0]}>
