@@ -125,7 +125,7 @@ const Video = ({ src, className = '' }: VideoProps) => {
       <video
         ref={videoRef}
         src={src}
-        className="h-full w-full object-cover"
+        className="h-full w-full object-contain"
         playsInline
         preload="metadata"
       />
