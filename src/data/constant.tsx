@@ -1,6 +1,6 @@
 import { BrightnessAlertIcon } from '@/components/icons';
 import Plan3d from '@/components/SolarPanel3d';
-import { ExploreRoutingType, TextItem, VideoCardProps } from '@/lib/types';
+import { ExploreRoutingType, VideoCardProps } from '@/lib/types';
 
 export const EXPLORE_ROUTING: ExploreRoutingType[] = [
   {
@@ -8,7 +8,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
     href: '/explore/explore',
     image: '/images/thumbnail/explore.webp',
     chipProps: { type: 'secondary' },
-    content: <Plan3d modelUrl="/ss3.glb" />,
+    content: <Plan3d modelUrl="/ss4.glb" />,
   },
   {
     title: 'Strength',
@@ -433,8 +433,7 @@ export const VIDEO_DATA: VideoCardProps[] = [
   {
     href: '/content/11',
     isTrending: true,
-    trendingThumbnail: '/images/artboard1.webp',
-    thumbnail: '/images/Artboard-1.webp',
+    thumbnail: '/images/group.webp',
     src: '/videos/solarsquares-savings-guarantee-solar--100-assured-savings-zero-fine-print-hindi.mp4',
     duration: '00:30',
     title: `Solar Square's Savings Guarantee Solar`,
@@ -442,20 +441,18 @@ export const VIDEO_DATA: VideoCardProps[] = [
   {
     href: '/content/12',
     isTrending: true,
-    thumbnail: '/images/Artboard-4.webp',
-    trendingThumbnail: '/images/artboard4.webp',
-    src: '/videos/dixit-nagar-nagpur-how-residents-went-from-10000-to-0-in-electricity-bills-with-solarsquare.mp4',
-    duration: '01:12',
-    title: `Dixit Nagar, Nagpur How Residents Went from ₹10,000 to ₹0 in Electricity Bills with SolarSquare!`,
+    thumbnail: '/images/360-degree-3.webp',
+    src: '/videos/sasta-solar-udega-solarsquare-ka-solar-tikega--bharat-ka-sahisolar.mp4',
+    duration: '00:41',
+    title: `Sasta Solar Udega, SolarSquare ka Solar Tikega`,
   },
   {
     href: '/content/13',
     isTrending: true,
-    trendingThumbnail: '/images/artboard3.webp',
-    thumbnail: '/images/Artboard-3.webp',
-    src: '/videos/sasta-solar-udega-solarsquare-ka-solar-tikega--bharat-ka-sahisolar.mp4',
-    duration: '00:41',
-    title: `Sasta Solar Udega, SolarSquare ka Solar Tikega`,
+    thumbnail: '/images/intro-to-structure.webp',
+    src: '/videos/dixit-nagar-nagpur-how-residents-went-from-10000-to-0-in-electricity-bills-with-solarsquare.mp4',
+    duration: '01:12',
+    title: `Dixit Nagar, Nagpur How Residents Went from ₹10,000 to ₹0 in Electricity Bills with SolarSquare!`,
   },
 ];
 
@@ -546,38 +543,33 @@ export const LABELS = [
 
 export const trendingVideos = VIDEO_DATA.filter((video) => video.isTrending);
 
-export const slidesData: {
-  text: TextItem[];
-  buttonText: string;
-  image: string;
-  href?: string;
-}[] = [
+export const slidesData = [
   {
     text: [
-      { text: `Sahi Solar Means`, color: 'text-white', break: true },
-      { text: 'Safe Solar', color: 'text-yellow-900' },
+      { text: `We're Solarizing,`, variant: 'blue', break: true },
+      { text: 'One Rooftop at a Time' },
     ],
-    buttonText: 'Watch Now',
-    image: trendingVideos[0]?.trendingThumbnail || '',
+    buttonText: 'Watch Now 1',
+    image: trendingVideos[0]?.thumbnail,
     href: trendingVideos[0]?.href,
   },
   {
-    image: trendingVideos[1]?.trendingThumbnail || '',
+    image: trendingVideos[1]?.thumbnail,
     href: trendingVideos[1]?.href,
+
     text: [
-      { text: `No More Bijli Bills`, color: 'text-yellow-900', break: true },
-      { text: 'For Dixit Nagar! ', color: 'text-white' },
+      { text: `Join the Solar Revolution,`, variant: 'blue', break: true },
+      { text: 'Power Your Future' },
     ],
-    buttonText: 'Watch Now',
+    buttonText: 'Watch Now 2',
   },
   {
-    image: trendingVideos[2]?.trendingThumbnail || '',
+    image: trendingVideos[2]?.thumbnail,
     text: [
-      { text: `Solar With`, color: 'text-white' },
-      { text: `Guaranteed`, color: 'text-yellow-900' },
-      { text: 'Savings & Generations', color: 'text-yellow-900', break: true },
+      { text: `Clean Energy for All,`, variant: 'blue', break: true },
+      { text: 'Start Today' },
     ],
-    buttonText: 'Watch Now',
+    buttonText: 'Watch Now 3',
     href: trendingVideos[2]?.href,
   },
 ];

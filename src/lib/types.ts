@@ -61,7 +61,6 @@ export interface VideoCardProps {
   duration: string;
   title: string;
   isTrending?: boolean;
-  trendingThumbnail?: string;
 }
 
 export interface HeaderProps {

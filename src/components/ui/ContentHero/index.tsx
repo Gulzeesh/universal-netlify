@@ -3,18 +3,18 @@ import Image from 'next/image';
 import MixColorsText from '../MixColorsText';
 import Button from '../Button';
 import { PlayIcon } from '@/components/icons';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { slidesData } from '@/data/constant';
 
 const ContentHero = () => {
-  const [currentSlide, setCurrentSlide] = useState(2);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slidesData.length);
-    }, 4000);
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
 
@@ -37,8 +37,9 @@ const ContentHero = () => {
           width={0}
           height={0}
           sizes="100vw"
-          className="absolute z-0 w-full"
+          className="absolute -top-2 -right-40 z-0 w-[80%]"
         />
+        <div className="absolute inset-0 bg-linear-(--fade-white-x)" />
 
         <div className="absolute right-0 bottom-4 left-0 z-20 flex justify-center space-x-2">
           {slidesData.map((_, index) => (
@@ -56,17 +57,24 @@ const ContentHero = () => {
 
         <div className="relative z-[1] mt-6 ml-16">
           <Image
-            src="/images/logo-white.webp"
+            src="/images/logo.webp"
             width={222}
             height={150}
             alt="solar logo"
             className="mb-[37px] h-[150px] w-[222px] object-contain"
           />
-
+          <MixColorsText
+            content={[
+              { text: `We're Solarizing,`, variant: 'blue', break: true },
+              { text: 'One Rooftop at a Time' },
+            ]}
+          />
           {/* TODO: if dynamic text needed */}
-          <MixColorsText content={slidesData[currentSlide].text} />
+          {/* <MixColorsText content={slides[currentSlide].text} /> */}
           <Button
-            content={slidesData[currentSlide].buttonText}
+            content={'Watch Now'}
+            // TODO: if dynamic buttonText needed
+            // content={slides[currentSlide].buttonText}
             leftIcon={<PlayIcon />}
             variant="primary"
             className="mt-5"

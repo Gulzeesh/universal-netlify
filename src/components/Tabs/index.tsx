@@ -8,7 +8,7 @@ import { Fragment } from 'react';
 
 function Tabs() {
   const pathname = usePathname();
-  useGLTF.preload('public/ss3.glb');
+  useGLTF.preload('public/ss4.glb');
   const isInExploreSection = pathname.startsWith('/explore/');
   const isInContentSection = pathname.startsWith('/content/');
 
