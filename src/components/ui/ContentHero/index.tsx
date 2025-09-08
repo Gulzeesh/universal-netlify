@@ -6,10 +6,15 @@ import { PlayIcon } from '@/components/icons';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { slidesData } from '@/data/constant';
+import useIdle from '@/hooks/useIdle';
 
 const ContentHero = () => {
   const [currentSlide, setCurrentSlide] = useState(2);
   const router = useRouter();
+  useIdle({
+    onIdle: () => router.push('/idle-screen'),
+    autoStart: true,
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {

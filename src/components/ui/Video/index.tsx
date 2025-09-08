@@ -7,6 +7,8 @@ import {
   VolumeUpIcon,
 } from '@/components/icons';
 import { VideoProps } from '@/lib/types';
+import useIdle from '@/hooks/useIdle';
+import { useRouter } from 'next/navigation';
 
 function formatTime(time: number) {
   if (!isFinite(time) || time < 0) return '0:00';
@@ -18,11 +20,13 @@ function formatTime(time: number) {
 const Video = ({ src, className = '' }: VideoProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const idle = useIdle({ onIdle: () => router.push('/idle-screen') });
 
   const progress = useMemo(
     () => (duration ? currentTime / duration : 0),
@@ -128,6 +132,7 @@ const Video = ({ src, className = '' }: VideoProps) => {
         className="h-full w-full object-contain"
         playsInline
         preload="metadata"
+        onEnded={() => idle.start()}
       />
 
       {/* controls */}

@@ -24,6 +24,8 @@ import Header from '../ui/Header';
 import Image from 'next/image';
 import Tag from '../ui/Tag';
 import { LABELS } from '@/data/constant';
+import useIdle from '@/hooks/useIdle';
+import { useRouter } from 'next/navigation';
 
 interface SceneProps {
   modelUrl: string;
@@ -172,6 +174,8 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
   const [highLightClicked, setHighLightClicked] = useState<null | number>(null);
   const idleTimeout = useRef<NodeJS.Timeout | null>(null);
   const IDLE_DELAY = 3000;
+  const router = useRouter();
+  useIdle({ onIdle: () => router.push('/idle-screen'), autoStart: true });
 
   useEffect(() => {
     const canvas = document.querySelector('canvas');

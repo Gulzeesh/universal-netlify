@@ -1,8 +1,14 @@
+'use client';
 import { EXPLORE_ROUTING } from '@/data/constant';
 import ExploreHomeCard from './components/ExploreHomeCard';
 import Header from '@/components/ui/Header';
+import { useRouter } from 'next/navigation';
+import useIdle from '@/hooks/useIdle';
 
 function ExploreHome() {
+  const router = useRouter();
+  useIdle({ onIdle: () => router.push('/idle-screen'), autoStart: true });
+
   return (
     <div
       className="flex h-[calc(100vh-74px)] flex-col gap-8 pb-8"

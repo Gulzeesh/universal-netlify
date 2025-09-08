@@ -1,6 +1,13 @@
 import { BrightnessAlertIcon } from '@/components/icons';
 import Plan3d from '@/components/SolarPanel3d';
-import { ExploreRoutingType, TextItem, VideoCardProps } from '@/lib/types';
+const IdleScreen = dynamic(() => import('@/components/ui/IdleScreen'));
+import {
+  ExploreRoutingType,
+  TextItem,
+  VideoCardProps,
+  WindDataType,
+} from '@/lib/types';
+import dynamic from 'next/dynamic';
 
 export const EXPLORE_ROUTING: ExploreRoutingType[] = [
   {
@@ -57,52 +64,13 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
     },
   },
   // TODO: uncommet after idle screen is implemented
-  // {
-  //   title: 'Compare',
-  //   href: '/explore/compare',
-  //   image: '/images/thumbnail/compare.webp',
-  //   chipProps: { type: 'secondary' },
-  //   content: {
-  //     headerData: {
-  //       content: {
-  //         title: [
-  //           { text: 'Hassle-free Installation in' },
-  //           { text: '8 hours', variant: 'blue' },
-  //         ],
-  //         description:
-  //           'Experience the smooth, same-day WindPro installation process.',
-  //       },
-  //     },
-  //     pointerListData: {
-  //       title: 'Fastest Installation Process',
-  //       pointers: [
-  //         {
-  //           icon: <BrightnessAlertIcon />,
-  //           title: 'Step/Point 1',
-  //           subTitle: 'Lorem ipsum dolor sit amet',
-  //         },
-  //         {
-  //           icon: <BrightnessAlertIcon />,
-  //           title: 'Step/Point 2',
-  //           subTitle: 'Lorem ipsum dolor sit amet',
-  //         },
-  //         {
-  //           icon: <BrightnessAlertIcon />,
-  //           title: 'Step/Point 3',
-  //           subTitle: 'Lorem ipsum dolor sit amet',
-  //         },
-  //         {
-  //           icon: <BrightnessAlertIcon />,
-  //           title: 'Step/Point 4',
-  //           subTitle: 'Lorem ipsum dolor sit amet',
-  //         },
-  //       ],
-  //     },
-  //     videoData: {
-  //       src: '/videos/ec-recognised-by-experts-with-music.webm',
-  //     },
-  //   },
-  // },
+  {
+    title: 'Compare',
+    href: '/explore/compare',
+    image: '/images/thumbnail/compare.webp',
+    chipProps: { type: 'secondary' },
+    content: <IdleScreen />,
+  },
   {
     title: 'Installation',
     href: '/explore/installation',
@@ -579,5 +547,32 @@ export const slidesData: {
     ],
     buttonText: 'Watch Now',
     href: trendingVideos[2]?.href,
+  },
+];
+
+export const WIND_DATA: WindDataType[] = [
+  {
+    heading: 'Breeze',
+    description:
+      'Everyday monsoon breeze — like a typical rainy day in Nagpur.',
+  },
+  {
+    heading: 'Strong Winds',
+    description:
+      'Shakes windows and breaks weak branches — common in Nagpur’s peak monsoon.',
+  },
+  {
+    heading: 'Storm',
+    description:
+      'Uproots trees and damages rooftops — Cyclone Tauktae (2021) hit Gujarat with winds of 140 km/h.',
+  },
+  {
+    heading: 'Cyclone',
+    description:
+      'Rips roofs and destroys weak structures — Cyclone Amphan (2020) struck Bengal with winds of 165 km/h.',
+  },
+  {
+    heading: 'STRONG WINDS',
+    description: 'Slide to compare more weather conditions',
   },
 ];

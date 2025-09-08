@@ -85,3 +85,8 @@ export interface TagProps {
   children: ReactNode;
   className?: string;
 }
+
+export type WindDataType = {
+  heading: string;
+  description: string;
+};

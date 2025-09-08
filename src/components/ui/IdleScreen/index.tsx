@@ -1,0 +1,90 @@
+'use client';
+import Image from 'next/image';
+import SpeedoMeter from './SpeedoMeter';
+import { useMemo, useState } from 'react';
+import Button from '../Button';
+import { HomeIcon } from '@/components/icons';
+import Link from 'next/link';
+import useIdle from '@/hooks/useIdle';
+
+const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
+  const [eqz, setEqz] = useState(10);
+  const currentValue = useMemo(() => eqz * 2 + 20, [eqz]);
+  const idle = useIdle({ autoStart: true });
+
+  const videoUrl = useMemo(() => {
+    return [40, 60].includes(currentValue)
+      ? '/videos/rain.mp4'
+      : [80, 100].includes(currentValue)
+        ? '/videos/severe-rain.mp4'
+        : currentValue === 120
+          ? '/videos/storm.mp4'
+          : [140, 160, 180].includes(currentValue)
+            ? '/videos/cyclone.mp4'
+            : '';
+  }, [currentValue]);
+
+  return (
+    <div
+      className={`absolute inset-0 ${!isHomeBtn ? 'bottom-[55px]' : 'z-20'} overflow-hidden select-none`}
+    >
+      <div className="absolute top-[21px] right-0 left-[38px] flex items-center justify-between">
+        <div className="flex-1">
+          <Image
+            src="/images/logo-white.webp"
+            width={197}
+            height={133}
+            alt="solar logo"
+            className="object-contain"
+          />
+        </div>
+        <div className="flex-1">
+          <h2 className="font-akira ml-[38px] max-w-[300px] text-[28px] leading-none font-extrabold tracking-[2.8px] text-white [text-shadow:var(--text-shadow-custom)]">
+            LOCAL SOLAR STRUCTURE
+          </h2>
+        </div>
+      </div>
+      <video
+        src={videoUrl}
+        playsInline
+        autoPlay
+        muted
+        loop
+        preload="auto"
+        className="w-full"
+      />
+      <div
+        className={`from-secondary-500 to-primary-500 absolute -inset-x-[300px] -bottom-[240px] z-10 ${!isHomeBtn ? 'mb-10' : ''} h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
+      >
+        <div className="from-primary-500 to-gradient-end relative z-0 h-full rounded-[50%] bg-gradient-to-r" />
+        <div className="absolute inset-0 top-[51px] z-20 h-full rounded-[50%]">
+          <SpeedoMeter
+            isIdle={idle.isIdle}
+            currentValue={currentValue}
+            eqz={eqz}
+            setEqz={setEqz}
+          />
+          <Image
+            width={1920}
+            height={413}
+            src="/icons/meter.svg"
+            alt="Meter"
+            className="pointer-events-none absolute inset-x-[300px] -top-[180px] z-0"
+          />
+        </div>
+        {isHomeBtn && (
+          <Link href="/explore">
+            <Button
+              leftIcon={<HomeIcon />}
+              variant="secondary"
+              content=""
+              className="absolute bottom-[280px] left-[330px] z-50"
+            />
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default IdleScreen;

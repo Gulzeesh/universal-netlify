@@ -3,7 +3,7 @@
 @theme {
   --font-dm-sans: var(--font-dm-sans);
   --font-poppins: var(--font-poppins);
-
+  --font-akira: var(--font-akira);
   /* primary */
   --color-primary-500: #131ca2;
   --color-primary-400: #0a12c9;
@@ -96,6 +96,12 @@
     drop-shadow(0 19px 11px rgba(42, 99, 216, 0.25))
     drop-shadow(0 34px 14px rgba(42, 99, 216, 0.07))
     drop-shadow(0 53px 15px rgba(42, 99, 216, 0.01));
+  --text-shadow-custom:
+    -877px 561px 250px rgba(40, 46, 51, 0.01),
+    -561px 359px 250px rgba(40, 46, 51, 0.05),
+    -316px 202px 225px rgba(40, 46, 51, 0.18),
+    -140px 90px 167px rgba(40, 46, 51, 0.3),
+    -35px 22px 92px rgba(40, 46, 51, 0.34);
 }
 
 ::-webkit-scrollbar {
