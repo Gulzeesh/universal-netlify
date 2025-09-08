@@ -4,9 +4,6 @@ import { usePathname } from 'next/navigation';
 import VideoCard from '../../../components/ui/Cards/VideoCard';
 import Header from '@/components/ui/Header';
 import Video from '@/components/ui/Video';
-import Button from '@/components/ui/Button';
-import Link from 'next/link';
-import { HomeIcon } from '@/components/icons';
 import { useMemo } from 'react';
 
 const ContentSection = () => {
@@ -23,11 +20,11 @@ const ContentSection = () => {
       <Header
         content={{
           title: [
-            { text: `Panels Don't Fail,` },
-            { text: 'Structures Do', variant: 'blue' },
+            { text: `Your solar journey,` },
+            { text: 'simplified', variant: 'blue' },
           ],
           description:
-            'Understand how weak structures cause long-term damage, leaks, and losses.',
+            'Everything you need to know before making the switch to solar.',
         }}
         className="px-16 pt-6"
         style={{ zoom: 0.59 }}
@@ -39,21 +36,11 @@ const ContentSection = () => {
           style={{ zoom: 0.6 }}
         >
           <div className="ml-14 overflow-y-scroll">
-            <div className="bg-background-300 mr-2 flex flex-grow flex-col gap-8 p-2.5 pb-36">
+            <div className="bg-background-300 mr-2 flex flex-grow flex-col gap-8 p-2.5">
               {VIDEO_DATA.map((data, index) => (
                 <VideoCard key={index} {...data} />
               ))}
             </div>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 flex h-[183px] items-end bg-linear-(--thumbnail-gradient) px-10 pb-10">
-            <Link href="/content">
-              <Button
-                variant="secondary"
-                content="Back to Home"
-                leftIcon={<HomeIcon />}
-                className="self-start"
-              />
-            </Link>
           </div>
         </div>
         <Video src={route.src} className="mr-14 ml-4" />

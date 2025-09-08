@@ -3,7 +3,6 @@ import { EXPLORE_ROUTING } from '@/data/constant';
 import { usePathname } from 'next/navigation';
 import { isValidElement, useMemo } from 'react';
 import Header from '@/components/ui/Header';
-import PointerList from './components/PointerList';
 import Video from '@/components/ui/Video';
 
 function ExploreSection() {
@@ -25,10 +24,8 @@ function ExploreSection() {
         className={`px-16 pt-6 ${route.content.headerData.className || ''}`}
         style={{ zoom: 0.58 }}
       />
-      <div className="mx-[46px] flex flex-grow gap-8">
-        <PointerList {...route.content.pointerListData} />
-        <Video {...route.content.videoData} />
-      </div>
+
+      <Video {...route.content.videoData} className="mx-auto! w-[75%]!" />
     </div>
   );
 }

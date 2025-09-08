@@ -10,7 +10,7 @@ const PointerList = ({ title, pointers }: PointerListProps) => {
       <h2 className="font-dm-sans text-[40px] leading-14 font-bold -tracking-[0.8px] text-neutral-500">
         {title}
       </h2>
-      {pointers.map((pointer, index) => (
+      {pointers?.map((pointer, index) => (
         <PointerCard key={index} {...pointer} />
       ))}
     </div>

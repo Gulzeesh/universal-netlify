@@ -38,7 +38,7 @@ export type ExploreRoutingType = {
     | ReactElement
     | {
         headerData: HeaderProps;
-        pointerListData: PointerListProps;
+        pointerListData?: PointerListProps;
         videoData: VideoProps;
       };
 };
@@ -60,6 +60,8 @@ export interface VideoCardProps {
   src: string;
   duration: string;
   title: string;
+  isTrending?: boolean;
+  trendingThumbnail?: string;
 }
 
 export interface HeaderProps {
