@@ -120,8 +120,7 @@ const Video = ({ src, className = '' }: VideoProps) => {
 
   return (
     <div
-      className={`border-background-400 relative h-[761px] w-full overflow-hidden rounded-xl border-2 ${className}`}
-      style={{ zoom: 0.86 }}
+      className={`border-background-400 relative h-[561px] w-full overflow-hidden rounded-xl border-2 ${className}`}
     >
       <video
         ref={videoRef}
