@@ -53,6 +53,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
         loop
         preload="auto"
         className="h-[80%] w-full object-cover object-top"
+        onLoadStart={() => setIsVideoLoaded(false)}
         onLoadedData={() => setIsVideoLoaded(true)}
       />
       <div
