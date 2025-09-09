@@ -29,20 +29,20 @@ const ContentHero = () => {
         src={slidesData[currentSlide].image}
         alt="Group Image"
         width={0}
-        height={0}
+        height={547}
         sizes="100vw"
-        className="absolute top-0 -right-40 z-0 h-full w-[80%] blur-[48px]"
+        className="absolute top-0 z-0 h-full w-[80%] blur-[48px] object-cover"
       />
-      <div className="absolute inset-0 bg-linear-(--fade-white-x)" />
+      <div className="absolute inset-0 bg-linear-(--fade-white-x) blur-[48px]" />
 
       <div className="relative h-[547px] overflow-hidden">
         <Image
           src={slidesData[currentSlide].image}
           alt={`Group Image ${currentSlide + 1}`}
           width={0}
-          height={0}
+          height={547}
           sizes="100vw"
-          className="absolute z-0 w-full"
+          className="absolute z-0 h-[532px] w-full object-cover"
         />
 
         <div className="absolute right-0 bottom-4 left-0 z-20 flex justify-center space-x-2">
