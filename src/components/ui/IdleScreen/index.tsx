@@ -55,18 +55,18 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
         className="h-[80%] w-full object-cover object-top"
         onLoadedData={() => setIsVideoLoaded(true)}
       />
-      {!isVideoLoaded && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-200">
-          <Image
-            width={198}
-            height={134}
-            alt="logo"
-            priority
-            src="/images/logo.webp"
-            className="animate-pulse"
-          />
-        </div>
-      )}
+      <div
+        className={`absolute inset-0 z-10 flex items-center justify-center bg-gray-200 ${!isVideoLoaded ? 'opacity-100' : 'opacity-0'} pointer-events-none`}
+      >
+        <Image
+          width={198}
+          height={134}
+          alt="logo"
+          priority
+          src="/images/logo.webp"
+          className="animate-pulse"
+        />
+      </div>
       <div
         className={`from-secondary-500 to-primary-500 absolute -inset-x-[310px] -bottom-[240px] z-10 ${!isHomeBtn ? 'mb-10' : ''} h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
       >
