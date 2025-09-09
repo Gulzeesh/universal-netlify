@@ -52,7 +52,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
         autoPlay
         loop
         preload="auto"
-        className={`${isHomeBtn ? 'h-[94%]' : 'h-[80%]'} w-full object-cover object-top`}
+        className="h-[80%] w-full object-cover object-top"
         onLoadStart={() => setIsVideoLoaded(false)}
         onLoadedData={() => setIsVideoLoaded(true)}
       />
@@ -69,7 +69,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
         />
       </div>
       <div
-        className={`from-secondary-500 to-primary-500 absolute -inset-x-[310px] z-10 ${!isHomeBtn ? '-bottom-[240px] mb-10' : '-bottom-[300px]'} h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
+        className={`from-secondary-500 to-primary-500 absolute -inset-x-[310px] -bottom-[240px] z-10 ${!isHomeBtn ? 'mb-10' : ''} h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
       >
         <div className="from-primary-500 to-gradient-end relative z-0 h-full rounded-[50%] bg-gradient-to-r" />
         <div className="absolute inset-0 top-[51px] z-20 h-full rounded-[50%]">
@@ -78,7 +78,6 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
             currentValue={currentValue}
             eqz={eqz}
             setEqz={setEqz}
-            isHomeBtn={isHomeBtn}
           />
           <Image
             width={0}
@@ -94,7 +93,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
               leftIcon={<HomeIcon />}
               variant="secondary"
               content=""
-              className="absolute bottom-[360px] left-[340px] z-50"
+              className="absolute bottom-[280px] left-[330px] z-50"
             />
           </Link>
         )}
