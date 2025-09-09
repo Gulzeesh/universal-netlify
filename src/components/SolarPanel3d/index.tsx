@@ -248,7 +248,7 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
         }}
         dpr={[1, 1.5]}
         camera={{ position: [0, 1, 13], fov: 35, near: 0.1, far: 1000 }}
-        className="h-screen w-full bg-[url('/background.jpg')] bg-cover bg-no-repeat"
+        className="h-screen w-full bg-[url('/bg-less-bright.jpg')] bg-cover bg-no-repeat"
       >
         {/* <Environment
           files={'/qwantani_morning_puresky_1k.hdr'}
