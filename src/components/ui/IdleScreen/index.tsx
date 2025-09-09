@@ -51,10 +51,10 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
         autoPlay
         loop
         preload="auto"
-        className="h-full w-full object-cover"
+        className="w-full object-cover object-top"
       />
       <div
-        className={`from-secondary-500 to-primary-500 absolute -inset-x-[300px] -bottom-[240px] z-10 ${!isHomeBtn ? 'mb-10' : ''} h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
+        className={`from-secondary-500 to-primary-500 absolute -inset-x-[310px] -bottom-[240px] z-10 ${!isHomeBtn ? 'mb-10' : ''} h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
       >
         <div className="from-primary-500 to-gradient-end relative z-0 h-full rounded-[50%] bg-gradient-to-r" />
         <div className="absolute inset-0 top-[51px] z-20 h-full rounded-[50%]">
@@ -65,11 +65,11 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
             setEqz={setEqz}
           />
           <Image
-            width={2160}
+            width={0}
             height={413}
             src="/icons/meter.svg"
             alt="Meter"
-            className="absolute inset-x-0 -top-[204px] left-1/2 z-0 -translate-x-1/2"
+            className="absolute -top-[166px] w-[75%] left-[310px] z-0"
           />
         </div>
         {isHomeBtn && (
