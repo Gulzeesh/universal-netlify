@@ -18,7 +18,7 @@ function formatTime(time: number) {
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
-const Video = ({ src, className = '' }: VideoProps) => {
+const Video = ({ src, thumbnail, className = '' }: VideoProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
@@ -136,6 +136,7 @@ const Video = ({ src, className = '' }: VideoProps) => {
         onEnded={() => idle.start()}
         onLoadStart={() => setIsVideoLoaded(false)}
         onLoadedData={() => setIsVideoLoaded(true)}
+        poster={thumbnail}
       />
       <div
         className={`absolute inset-0 z-10 flex items-center justify-center bg-gray-200 ${!isVideoLoaded ? 'opacity-100' : 'opacity-0'} pointer-events-none`}

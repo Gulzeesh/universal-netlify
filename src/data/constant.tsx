@@ -60,6 +60,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
       },
       videoData: {
         src: '/videos/tile-2-why-strength-matters1.mp4',
+        thumbnail: '/images/thumbnail/strength.webp',
       },
     },
   },
@@ -114,6 +115,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
       },
       videoData: {
         src: '/videos/tile-4-installation1.mp4',
+        thumbnail: '/images/thumbnail/installation.webp',
       },
     },
   },
@@ -161,6 +163,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
       // },
       videoData: {
         src: '/videos/tile-5-quality1.mp4',
+        thumbnail: '/images/thumbnail/quality.webp',
       },
     },
   },
@@ -207,6 +210,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
       // },
       videoData: {
         src: '/videos/stories-of-trust-testimonal-kunal-meshram1.mp4',
+        thumbnail: '/images/thumbnail/impact.webp',
       },
     },
   },
@@ -259,6 +263,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
       // },
       videoData: {
         src: '/videos/tile-stories-of-trust1.mp4',
+        thumbnail: '/images/thumbnail/commitment.webp',
       },
     },
   },
@@ -306,6 +311,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
       },
       videoData: {
         src: '/videos/tile-people-behind-the-structure1.mp4',
+        thumbnail: '/images/thumbnail/recognition.webp',
       },
     },
   },

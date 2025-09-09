@@ -77,6 +77,7 @@ export interface HeaderProps {
 
 export interface VideoProps {
   src: string;
+  thumbnail: string;
   className?: string;
 }
 
