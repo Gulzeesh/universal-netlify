@@ -49,10 +49,9 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
         src={videoUrl}
         playsInline
         autoPlay
-        muted
         loop
         preload="auto"
-        className="w-full h-full object-cover"
+        className="h-full w-full object-cover"
       />
       <div
         className={`from-secondary-500 to-primary-500 absolute -inset-x-[300px] -bottom-[240px] z-10 ${!isHomeBtn ? 'mb-10' : ''} h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
@@ -70,7 +69,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
             height={413}
             src="/icons/meter.svg"
             alt="Meter"
-            className="absolute inset-x-0 -top-[204px] z-0 left-1/2 -translate-x-1/2"
+            className="absolute inset-x-0 -top-[204px] left-1/2 z-0 -translate-x-1/2"
           />
         </div>
         {isHomeBtn && (
