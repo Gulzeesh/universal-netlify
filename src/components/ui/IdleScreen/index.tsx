@@ -52,7 +52,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
         muted
         loop
         preload="auto"
-        className="w-full"
+        className="w-full h-full object-cover"
       />
       <div
         className={`from-secondary-500 to-primary-500 absolute -inset-x-[300px] -bottom-[240px] z-10 ${!isHomeBtn ? 'mb-10' : ''} h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
@@ -66,11 +66,11 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
             setEqz={setEqz}
           />
           <Image
-            width={1920}
+            width={2160}
             height={413}
             src="/icons/meter.svg"
             alt="Meter"
-            className="pointer-events-none absolute inset-x-[300px] -top-[180px] z-0"
+            className="absolute inset-x-0 -top-[204px] z-0 left-1/2 -translate-x-1/2"
           />
         </div>
         {isHomeBtn && (
