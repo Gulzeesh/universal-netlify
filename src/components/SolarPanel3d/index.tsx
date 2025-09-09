@@ -220,7 +220,7 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
           style={{ zoom: 0.67 }}
         >
           <Image
-            src={'/finger-click.gif'}
+            src={'/gifs/finger-click.gif'}
             width={150}
             height={150}
             alt="nudge gif"
