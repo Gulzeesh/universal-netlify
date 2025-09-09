@@ -9,6 +9,7 @@ import {
 import { VideoProps } from '@/lib/types';
 import useIdle from '@/hooks/useIdle';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 function formatTime(time: number) {
   if (!isFinite(time) || time < 0) return '0:00';
@@ -21,7 +22,7 @@ const Video = ({ src, className = '' }: VideoProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
-
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -133,8 +134,21 @@ const Video = ({ src, className = '' }: VideoProps) => {
         playsInline
         preload="metadata"
         onEnded={() => idle.start()}
+        onLoadStart={() => setIsVideoLoaded(false)}
+        onLoadedData={() => setIsVideoLoaded(true)}
       />
-
+      <div
+        className={`absolute inset-0 z-10 flex items-center justify-center bg-gray-200 ${!isVideoLoaded ? 'opacity-100' : 'opacity-0'} pointer-events-none`}
+      >
+        <Image
+          width={108}
+          height={134}
+          alt="logo"
+          priority
+          src="/images/logo.webp"
+          className="animate-pulse"
+        />
+      </div>
       {/* controls */}
       <div className="absolute inset-x-8 bottom-8 flex h-[88px] items-center gap-10 rounded-xl bg-[rgba(14,17,24,0.40)] px-6 py-3 backdrop-blur-[2px]">
         {/* Play/Pause button */}
