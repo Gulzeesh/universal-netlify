@@ -12,7 +12,13 @@ import {
   useState,
 } from 'react';
 
-function WindInfo({ currentWindData }: { currentWindData: WindDataType }) {
+function WindInfo({
+  currentWindData,
+  isHomeBtn,
+}: {
+  currentWindData: WindDataType;
+  isHomeBtn?: boolean;
+}) {
   const [displayedData, setDisplayedData] = useState(currentWindData);
   const [animating, setAnimating] = useState<'in' | 'out'>('in');
 
@@ -32,10 +38,14 @@ function WindInfo({ currentWindData }: { currentWindData: WindDataType }) {
       <div
         className={`flex transform flex-col items-center justify-center transition-all duration-300 ${animating === 'in' ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}
       >
-        <h2 className="font-akira text-[40px]/[56px] font-extrabold tracking-[1.6px] text-white uppercase">
+        <h2
+          className={`font-akira ${isHomeBtn ? 'text-[40px]/[56px]' : 'text-[32px]/[56px]'} font-extrabold tracking-[1.6px] text-white uppercase`}
+        >
           {displayedData.heading}
         </h2>
-        <p className="font-dm-sans text-[32px]/[44.8px] font-medium tracking-[-1.28px] text-white italic opacity-80">
+        <p
+          className={`font-dm-sans ${isHomeBtn ? 'text-[32px]/[44.8px]' : 'text-[24px]/[44.8px]'} font-medium tracking-[-1.28px] text-white italic opacity-80`}
+        >
           {displayedData.description}
         </p>
       </div>
@@ -48,11 +58,13 @@ const SpeedoMeter = ({
   eqz,
   setEqz,
   isIdle,
+  isHomeBtn,
 }: {
   currentValue: number;
   eqz: number;
   setEqz: Dispatch<SetStateAction<number>>;
   isIdle: boolean;
+  isHomeBtn?: boolean;
 }) => {
   const [prevValue, setPrevValue] = useState(10);
 
@@ -216,7 +228,7 @@ const SpeedoMeter = ({
             )}
           </div>
         </div>
-        <WindInfo currentWindData={windData} />
+        <WindInfo currentWindData={windData} isHomeBtn={isHomeBtn} />
       </div>
       <style>{`
 .trick-demo {
