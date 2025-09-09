@@ -129,7 +129,7 @@ const Video = ({ src, className = '' }: VideoProps) => {
       <video
         ref={videoRef}
         src={src}
-        className="h-full w-full object-contain"
+        className="h-full w-full object-cover object-center"
         playsInline
         preload="metadata"
         onEnded={() => idle.start()}

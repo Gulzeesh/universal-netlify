@@ -69,7 +69,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
             height={413}
             src="/icons/meter.svg"
             alt="Meter"
-            className="absolute -top-[166px] w-[75%] left-[310px] z-0"
+            className="absolute -top-[166px] left-[310px] z-0 w-[75%]"
           />
         </div>
         {isHomeBtn && (

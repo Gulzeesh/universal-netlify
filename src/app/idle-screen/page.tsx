@@ -1,4 +1,4 @@
-import IdleScreen from "@/components/ui/IdleScreen";
+import IdleScreen from '@/components/ui/IdleScreen';
 
 const IdleScreenPage = () => {
   return <IdleScreen isHomeBtn={true} />;

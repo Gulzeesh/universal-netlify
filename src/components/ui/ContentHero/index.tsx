@@ -31,7 +31,7 @@ const ContentHero = () => {
         width={0}
         height={547}
         sizes="100vw"
-        className="absolute top-0 z-0 h-full w-[80%] blur-[48px] object-cover"
+        className="absolute top-0 z-0 h-full w-[80%] object-cover blur-[48px]"
       />
       <div className="absolute inset-0 bg-linear-(--fade-white-x) blur-[48px]" />
 
