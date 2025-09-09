@@ -27,6 +27,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
   return (
     <div
       className={`absolute inset-0 ${!isHomeBtn ? 'bottom-[55px]' : 'z-20'} overflow-hidden select-none`}
+      style={{ zoom: 0.67 }}
     >
       <div className="absolute top-[21px] right-0 left-[38px] flex items-center justify-between">
         <div className="flex-1">
