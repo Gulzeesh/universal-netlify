@@ -51,7 +51,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
         autoPlay
         loop
         preload="auto"
-        className="w-full object-cover object-top"
+        className="h-[80%] w-full object-cover object-top"
       />
       <div
         className={`from-secondary-500 to-primary-500 absolute -inset-x-[310px] -bottom-[240px] z-10 ${!isHomeBtn ? 'mb-10' : ''} h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
