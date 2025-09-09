@@ -27,7 +27,10 @@ const Video = ({ src, thumbnail, className = '' }: VideoProps) => {
   const [isMuted, setIsMuted] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const idle = useIdle({ onIdle: () => router.push('/idle-screen') });
+  const idle = useIdle({
+    onIdle: () => router.push('/idle-screen'),
+    autoStart: true,
+  });
 
   const progress = useMemo(
     () => (duration ? currentTime / duration : 0),
@@ -59,6 +62,15 @@ const Video = ({ src, thumbnail, className = '' }: VideoProps) => {
       video.removeEventListener('ended', onEnd);
     };
   }, []);
+
+  useEffect(() => {
+    if (isPlaying) {
+      idle.stop();
+    } else {
+      idle.start();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPlaying]);
 
   // Controls
   const togglePlay = () => {
