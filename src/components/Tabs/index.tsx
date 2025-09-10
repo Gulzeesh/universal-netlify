@@ -11,6 +11,7 @@ function Tabs() {
   useGLTF.preload('public/ss3.glb');
   const isInExploreSection = pathname.startsWith('/explore/');
   const isInContentSection = pathname.startsWith('/content/');
+  const isInCompareSection = pathname.includes('/explore/compare');
 
   const routingData = isInExploreSection
     ? [
@@ -23,6 +24,10 @@ function Tabs() {
           ...HOME_ROUTING,
         ]
       : HOME_ROUTING;
+
+  if (isInCompareSection) {
+    return <></>;
+  }
 
   return (
     <div

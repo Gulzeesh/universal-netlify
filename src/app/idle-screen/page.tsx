@@ -1,7 +1,7 @@
 import IdleScreen from '@/components/ui/IdleScreen';
 
 const IdleScreenPage = () => {
-  return <IdleScreen isHomeBtn={true} />;
+  return <IdleScreen />;
 };
 
 export default IdleScreenPage;

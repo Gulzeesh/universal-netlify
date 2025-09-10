@@ -7,7 +7,7 @@ import { HomeIcon } from '@/components/icons';
 import Link from 'next/link';
 import useIdle from '@/hooks/useIdle';
 
-const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
+const IdleScreen = () => {
   const [eqz, setEqz] = useState(10);
   const currentValue = useMemo(() => eqz * 2 + 20, [eqz]);
   const idle = useIdle({ autoStart: true });
@@ -27,7 +27,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
 
   return (
     <div
-      className={`absolute inset-0 ${isHomeBtn ? 'z-20' : 'bottom-[55px]'} overflow-hidden select-none`}
+      className={`absolute inset-0 z-20 overflow-hidden select-none`}
       style={{ zoom: 0.67 }}
     >
       <div className="absolute top-[21px] right-0 left-[38px] flex items-center justify-between">
@@ -69,7 +69,7 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
         />
       </div>
       <div
-        className={`from-secondary-500 to-primary-500 absolute -inset-x-[310px] -bottom-[240px] z-10 ${!isHomeBtn ? 'mb-10' : ''} h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
+        className={`from-secondary-500 to-primary-500 absolute -inset-x-[310px] -bottom-[240px] z-10 h-1/2 rounded-[50%] bg-gradient-to-r pt-8`}
       >
         <div className="from-primary-500 to-gradient-end relative z-0 h-full rounded-[50%] bg-gradient-to-r" />
         <div className="absolute inset-0 top-[51px] z-20 h-full rounded-[50%]">
@@ -87,16 +87,14 @@ const IdleScreen = ({ isHomeBtn = false }: { isHomeBtn?: boolean }) => {
             className="absolute -top-[166px] left-[310px] z-0 w-[75%]"
           />
         </div>
-        {isHomeBtn && (
-          <Link href="/explore">
-            <Button
-              leftIcon={<HomeIcon />}
-              variant="secondary"
-              content=""
-              className="absolute bottom-[280px] left-[330px] z-50"
-            />
-          </Link>
-        )}
+        <Link href="/explore">
+          <Button
+            leftIcon={<HomeIcon />}
+            variant="secondary"
+            content=""
+            className="absolute bottom-[280px] left-[330px] z-50"
+          />
+        </Link>
       </div>
     </div>
   );
