@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   PauseIcon,
   PlayIcon,
@@ -87,37 +87,61 @@ const Video = ({ src, thumbnail, className = '' }: VideoProps) => {
     setIsMuted(video.muted);
   };
 
-  const seekToFraction = (frac: number) => {
-    const video = videoRef.current;
-    if (!video || !duration) return;
-    const clamped = Math.max(0, Math.min(1, frac));
-    video.currentTime = clamped * duration;
-  };
+  // Seek to a fraction of the video duration
+  const seekToFraction = useCallback(
+    (frac: number) => {
+      const video = videoRef.current;
+      if (!video || !duration) return;
 
-  // Click + drag seek
-  const onProgressPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    const element = progressRef.current;
-    if (!element) return;
-    element.setPointerCapture(event.pointerId);
+      const clamped = Math.max(0, Math.min(1, frac));
+      video.currentTime = clamped * duration;
 
-    const updateFromEvent = (clientX: number) => {
-      const rect = element.getBoundingClientRect();
-      const frac = (clientX - rect.left) / rect.width;
-      seekToFraction(frac);
-    };
+      if (isPlaying) {
+        const resume = () => {
+          if (video.readyState >= 2) {
+            video.play().catch(() => {});
+            video.removeEventListener('seeked', resume);
+          }
+        };
+        video.addEventListener('seeked', resume);
+      }
+    },
+    [duration, isPlaying],
+  );
 
-    updateFromEvent(event.clientX);
+  const onProgressPointerDown = useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      const element = progressRef.current;
+      if (!element) return;
 
-    const move = (event: PointerEvent) => updateFromEvent(event.clientX);
-    const up = () => {
-      element.releasePointerCapture(event.pointerId);
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
-    };
+      const pointerId = event.pointerId;
+      element.setPointerCapture(pointerId);
 
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
-  };
+      const updateFromEvent = (clientX: number) => {
+        const rect = element.getBoundingClientRect();
+        const frac = (clientX - rect.left) / rect.width;
+        seekToFraction(frac);
+      };
+
+      // Initial seek on press
+      updateFromEvent(event.clientX);
+
+      const move = (e: PointerEvent) => updateFromEvent(e.clientX);
+
+      const up = () => {
+        // Only release if the element still has capture
+        if (element.hasPointerCapture(pointerId)) {
+          element.releasePointerCapture(pointerId);
+        }
+        window.removeEventListener('pointermove', move);
+        window.removeEventListener('pointerup', up);
+      };
+
+      window.addEventListener('pointermove', move);
+      window.addEventListener('pointerup', up);
+    },
+    [seekToFraction],
+  );
 
   // Keyboard: space toggles play/pause when the bar has focus
   const onBarKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
