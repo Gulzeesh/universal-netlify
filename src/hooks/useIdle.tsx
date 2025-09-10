@@ -17,7 +17,7 @@ type UseIdleReturn = {
 
 const useIdle = ({
   onIdle,
-  timeout = 45000,
+  timeout = 450000000,
   autoStart = false,
 }: UseIdleOptions = {}): UseIdleReturn => {
   const [isIdle, setIsIdle] = useState(false);

@@ -208,7 +208,7 @@ const Plan3d = memo(({ modelUrl }: { modelUrl: string }) => {
         content={{
           title: [{ text: `India's Safest & Strongest Solar️` }],
           description:
-            'See how smart design makes us stronger, safer, and more reliable than local structures.',
+            'Understand how weak structures cause long-term damage, leaks, and losses.',
         }}
         className="absolute top-0 z-30 w-full px-16 pt-4 [&>img:last-child]:opacity-0"
         style={{ zoom: 0.59 }}

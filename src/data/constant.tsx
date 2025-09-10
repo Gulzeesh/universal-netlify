@@ -176,11 +176,11 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
       headerData: {
         content: {
           title: [
-            { text: 'Recognised By' },
-            { text: 'Industry Experts', variant: 'blue' },
+            { text: 'What customers say after' },
+            { text: 'one year of storms', variant: 'blue' },
           ],
           description:
-            'See the certifications, awards, and bodies that endorse WindPro.',
+            'Hear real stories from families who trusted WindPro for their homes.',
         },
       },
       // pointerListData: {
@@ -229,11 +229,11 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
       headerData: {
         content: {
           title: [
-            { text: 'A Structure' },
-            { text: 'Built to Last', variant: 'blue' },
+            { text: 'Expertise you can' },
+            { text: 'trust', variant: 'blue' },
           ],
           description:
-            'Discover what makes WindPro the most reliable solar structure in India.',
+            'Meet the engineers & innovators who have built India’s safest solar structure',
         },
       },
       // pointerListData: {
@@ -262,7 +262,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
       //   ],
       // },
       videoData: {
-        src: '/videos/tile-stories-of-trust1.mp4',
+        src: '/videos/tile-people-behind-the-structure1.mp4',
         thumbnail: '/images/thumbnail/commitment.webp',
       },
     },
@@ -276,12 +276,12 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
       headerData: {
         content: {
           title: [
-            { text: 'What customers say after' },
-            { text: 'one year of storms', variant: 'blue' },
+            { text: 'Quality that wins' },
+            { text: 'appreciation', variant: 'blue' },
           ],
 
           description:
-            'Hear real stories from families who trusted WindPro for their homes.',
+            'See the certifications, awards & bodies that endorse WindPro',
         },
       },
       pointerListData: {
@@ -310,7 +310,7 @@ export const EXPLORE_ROUTING: ExploreRoutingType[] = [
         ],
       },
       videoData: {
-        src: '/videos/tile-people-behind-the-structure1.mp4',
+        src: '/videos/tile-stories-of-trust1.mp4',
         thumbnail: '/images/thumbnail/recognition.webp',
       },
     },
