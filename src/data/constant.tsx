@@ -379,7 +379,7 @@ export const VIDEO_DATA: VideoCardProps[] = [
     thumbnail: '/images/thumbnail/all-content/raat-ko-solar-chalega.webp',
     src: '/videos/do-solar-panels-work-at-night-the-complete-truth-solarsquare-720p-h2641.mp4',
     duration: '03:03',
-    title: 'Raat Ko Solar ChalegaRaat Ko Solar Chalega',
+    title: 'Raat Ko Solar Chalega',
   },
   {
     href: '/content/8',
