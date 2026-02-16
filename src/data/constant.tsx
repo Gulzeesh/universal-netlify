@@ -379,7 +379,7 @@ export const VIDEO_DATA: VideoCardProps[] = [
     thumbnail: '/images/thumbnail/all-content/raat-ko-solar-chalega.webp',
     src: '/videos/do-solar-panels-work-at-night-the-complete-truth-solarsquare-720p-h2641.mp4',
     duration: '03:03',
-    title: 'Raat Ko Solar Chalega',
+    title: 'Raat Ko Solar ChalegaRaat Ko Solar Chalega',
   },
   {
     href: '/content/8',
@@ -560,12 +560,12 @@ export const WIND_DATA: WindDataType[] = [
   {
     heading: 'Breeze',
     description:
-      'Everyday monsoon breeze — like a typical rainy day in Bhopal.',
+      'Everyday monsoon breeze — like a typical rainy day in Kanpur.',
   },
   {
     heading: 'Strong Winds',
     description:
-      'Shakes windows and breaks weak branches — common in Bhopal’s peak monsoon.',
+      'Shakes windows and breaks weak branches — common in Kanpur’s peak monsoon.',
   },
   {
     heading: 'Storm',

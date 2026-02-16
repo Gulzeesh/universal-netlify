@@ -43,11 +43,7 @@ const ContentSection = () => {
             </div>
           </div>
         </div>
-        <Video
-          src={route.src}
-          thumbnail={route.thumbnail}
-          className="mr-14 ml-4"
-        />
+        <Video src={route.src} thumbnail={route.thumbnail} className="mr-14 ml-4" />
       </div>
     </div>
   );
