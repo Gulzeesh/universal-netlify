@@ -559,13 +559,12 @@ export const slidesData: {
 export const WIND_DATA: WindDataType[] = [
   {
     heading: 'Breeze',
-    description:
-      'Everyday monsoon breeze — like a typical rainy day in Kanpur.',
+    description: 'Everyday monsoon breeze — like a typical rainy day.',
   },
   {
     heading: 'Strong Winds',
     description:
-      'Shakes windows and breaks weak branches — common in Kanpur’s peak monsoon.',
+      'Shakes windows and breaks weak branches — common in peak monsoon.',
   },
   {
     heading: 'Storm',
